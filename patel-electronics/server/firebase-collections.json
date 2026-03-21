@@ -1,0 +1,32 @@
+[
+  {
+    "id": "fabric-care",
+    "title": "Fabric Care",
+    "description": "Advanced washing systems for delicate textiles."
+  },
+  {
+    "id": "cold-storage",
+    "title": "Cold Storage", 
+    "description": "Precision cooling for culinary preservation."
+  },
+  {
+    "id": "cooking-tech",
+    "title": "Cooking Technology",
+    "description": "Smart ovens and induction cooking systems."
+  },
+  {
+    "id": "air-care",
+    "title": "Air Care",
+    "description": "Purifiers and climate control solutions."
+  },
+  {
+    "id": "small-appliances",
+    "title": "Small Appliances",
+    "description": "Compact solutions for modern kitchens."
+  },
+  {
+    "id": "entertainment",
+    "title": "Entertainment",
+    "description": "Audio and visual entertainment systems."
+  }
+]

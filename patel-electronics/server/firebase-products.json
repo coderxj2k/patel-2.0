@@ -1,0 +1,62 @@
+[
+  {
+    "id": "frostline-fridge",
+    "name": "Frostline Smart Fridge",
+    "description": "Counter-depth cooling with adaptive humidity drawers.",
+    "price": 1299,
+    "category": "Cold Storage",
+    "brand": "Frostline",
+    "inStock": true,
+    "rating": 4.5,
+    "reviews": 128,
+    "image": "https://images.unsplash.com/photo-1584243027496-9645097a0054?w=800&h=600&fit=crop"
+  },
+  {
+    "id": "silkguard-washer",
+    "name": "Silkguard Washer", 
+    "description": "Ultra-quiet drum with steam cleaning for delicate fabrics.",
+    "price": 899,
+    "category": "Fabric Care",
+    "brand": "Silkguard",
+    "inStock": true,
+    "rating": 4.7,
+    "reviews": 89,
+    "image": "https://images.unsplash.com/photo-1558029006-66b89710c3cd?w=800&h=600&fit=crop"
+  },
+  {
+    "id": "cinemaview-tv",
+    "name": "CinemaView OLED TV",
+    "description": "Ultra-thin 65\" display with cinematic clarity.",
+    "price": 1599,
+    "category": "Entertainment",
+    "brand": "CinemaView",
+    "inStock": true,
+    "rating": 4.8,
+    "reviews": 203,
+    "image": "https://images.unsplash.com/photo-1596786350986-224a6375b5fa?w=800&h=600&fit=crop"
+  },
+  {
+    "id": "airpure-pro",
+    "name": "AirPure Pro",
+    "description": "HEPA filtration with smart air quality monitoring.",
+    "price": 699,
+    "category": "Air Care",
+    "brand": "AirPure",
+    "inStock": true,
+    "rating": 4.3,
+    "reviews": 67,
+    "image": "https://images.unsplash.com/photo-1574383404275-24236b5f264a?w=800&h=600&fit=crop"
+  },
+  {
+    "id": "powerstation-elite",
+    "name": "PowerStation Elite",
+    "description": "Solar-compatible backup with app control.",
+    "price": 499,
+    "category": "Small Appliances",
+    "brand": "PowerStation",
+    "inStock": true,
+    "rating": 4.6,
+    "reviews": 45,
+    "image": "https://images.unsplash.com/photo-1532274402911-5a369e4c4bb5?w=800&h=600&fit=crop"
+  }
+]

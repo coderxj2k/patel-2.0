@@ -1,0 +1,253 @@
+{
+  "database": {
+    "firebase": {
+      "projectId": "${FIREBASE_PROJECT_ID}",
+      "clientEmail": "${FIREBASE_CLIENT_EMAIL}",
+      "privateKey": "${FIREBASE_PRIVATE_KEY}",
+      "databaseUrl": "${FIREBASE_DATABASE_URL}",
+      "collections": {
+        "users": "users",
+        "products": "products", 
+        "orders": "orders",
+        "customers": "customers",
+        "sales": "sales",
+        "analytics": "analytics"
+      },
+      "fallbackData": {
+        "collections": [
+          {
+            "id": "fabric-care",
+            "title": "Fabric Care",
+            "description": "Advanced washing systems for delicate textiles."
+          },
+          {
+            "id": "cold-storage",
+            "title": "Cold Storage", 
+            "description": "Precision cooling for culinary preservation."
+          },
+          {
+            "id": "cooking-tech",
+            "title": "Cooking Technology",
+            "description": "Smart ovens and induction cooking systems."
+          },
+          {
+            "id": "air-care",
+            "title": "Air Care",
+            "description": "Purifiers and climate control solutions."
+          },
+          {
+            "id": "small-appliances",
+            "title": "Small Appliances",
+            "description": "Compact solutions for modern kitchens."
+          },
+          {
+            "id": "entertainment",
+            "title": "Entertainment",
+            "description": "Audio and visual entertainment systems."
+          }
+        ],
+        "products": [
+          {
+            "id": "frostline-fridge",
+            "name": "Frostline Smart Fridge",
+            "description": "Counter-depth cooling with adaptive humidity drawers.",
+            "price": 1299,
+            "category": "Cold Storage",
+            "brand": "Frostline",
+            "inStock": true,
+            "rating": 4.5,
+            "reviews": 128
+          },
+          {
+            "id": "silkguard-washer", 
+            "name": "Silkguard Washer",
+            "description": "Ultra-quiet drum with steam cleaning for delicate fabrics.",
+            "price": 899,
+            "category": "Fabric Care",
+            "brand": "Silkguard",
+            "inStock": true,
+            "rating": 4.7,
+            "reviews": 89
+          },
+          {
+            "id": "cinemaview-tv",
+            "name": "CinemaView OLED TV",
+            "description": "Ultra-thin 65\" display with cinematic clarity.",
+            "price": 1599,
+            "category": "Entertainment",
+            "brand": "CinemaView",
+            "inStock": true,
+            "rating": 4.8,
+            "reviews": 203
+          },
+          {
+            "id": "airpure-pro",
+            "name": "AirPure Pro",
+            "description": "HEPA filtration with smart air quality monitoring.",
+            "price": 699,
+            "category": "Air Care",
+            "brand": "AirPure",
+            "inStock": true,
+            "rating": 4.3,
+            "reviews": 67
+          },
+          {
+            "id": "powerstation-elite",
+            "name": "PowerStation Elite",
+            "description": "Solar-compatible backup with app control.",
+            "price": 499,
+            "category": "Small Appliances",
+            "brand": "PowerStation",
+            "inStock": true,
+            "rating": 4.6,
+            "reviews": 45
+          }
+        ]
+      }
+    },
+    "server": {
+      "port": 8080,
+      "host": "localhost",
+      "cors": {
+        "origin": ["http://localhost:5173", "http://localhost:5174"],
+        "methods": ["GET", "POST", "PUT", "DELETE"],
+        "allowedHeaders": ["Content-Type", "Authorization"]
+      }
+    }
+  },
+  "roles": {
+    "admin": {
+      "displayName": "System Administrator",
+      "defaultEmail": "admin@patelelectronics.com",
+      "defaultPassword": "admin123",
+      "permissions": [
+        "read",
+        "write", 
+        "delete",
+        "manage_sales",
+        "manage_products",
+        "view_analytics",
+        "manage_users",
+        "system_settings"
+      ],
+      "description": "Full system access with all administrative privileges"
+    },
+    "sales": {
+      "displayName": "Sales Representative",
+      "defaultEmail": "sales@patelelectronics.com", 
+      "defaultPassword": "sales123",
+      "permissions": [
+        "read",
+        "write",
+        "manage_sales",
+        "view_analytics",
+        "process_orders",
+        "manage_customers"
+      ],
+      "description": "Sales management with order processing and customer management"
+    }
+  },
+  "permissions": {
+    "read": {
+      "name": "Read Access",
+      "description": "View data and reports"
+    },
+    "write": {
+      "name": "Write Access", 
+      "description": "Create and edit data"
+    },
+    "delete": {
+      "name": "Delete Access",
+      "description": "Remove and delete data"
+    },
+    "manage_sales": {
+      "name": "Manage Sales",
+      "description": "Access sales management features"
+    },
+    "manage_products": {
+      "name": "Manage Products",
+      "description": "Add, edit, and remove products"
+    },
+    "view_analytics": {
+      "name": "View Analytics",
+      "description": "Access reports and analytics"
+    },
+    "process_orders": {
+      "name": "Process Orders",
+      "description": "Manage order processing and status updates"
+    },
+    "manage_customers": {
+      "name": "Manage Customers",
+      "description": "View and manage customer information"
+    },
+    "manage_users": {
+      "name": "Manage Users",
+      "description": "Create and manage user accounts"
+    },
+    "system_settings": {
+      "name": "System Settings",
+      "description": "Access system configuration and settings"
+    }
+  },
+  "environmentVariables": {
+    "DEFAULT_ADMIN_EMAIL": "admin@patelelectronics.com",
+    "DEFAULT_ADMIN_PASSWORD": "admin123",
+    "DEFAULT_SALES_EMAIL": "sales@patelelectronics.com",
+    "DEFAULT_SALES_PASSWORD": "sales123",
+    "FIREBASE_PROJECT_ID": "your-firebase-project-id",
+    "FIREBASE_CLIENT_EMAIL": "your-service-account@project-id.iam.gserviceaccount.com",
+    "FIREBASE_PRIVATE_KEY": "-----BEGIN PRIVATE KEY-----\\nYour private key here\\n-----END PRIVATE KEY-----\\n",
+    "FIREBASE_DATABASE_URL": "https://your-project-id.firebaseio.com"
+  },
+  "endpoints": {
+    "admin": {
+      "login": "/api/admin/login",
+      "verifyToken": "/api/admin/verify-token",
+      "users": "/api/admin/users"
+    },
+    "sales": {
+      "login": "/api/sales/login",
+      "verifyToken": "/api/sales/verify-token", 
+      "users": "/api/sales/users"
+    },
+    "api": {
+      "collections": "/api/collections",
+      "products": "/api/products",
+      "checkout": "/api/checkout",
+      "health": "/api/health"
+    }
+  },
+  "tokenConfig": {
+    "expiryHours": 24,
+    "algorithm": "base64",
+    "structure": {
+      "uid": "Firebase User ID",
+      "email": "User Email",
+      "role": "User Role (admin/sales)",
+      "permissions": "Array of User Permissions",
+      "timestamp": "Token Creation Timestamp"
+    }
+  },
+  "features": {
+    "authentication": {
+      "enabled": true,
+      "providers": ["firebase", "google-oauth"],
+      "sessionManagement": true,
+      "passwordReset": true
+    },
+    "database": {
+      "type": "firestore",
+      "fallbackEnabled": true,
+      "realtimeUpdates": false
+    },
+    "analytics": {
+      "enabled": true,
+      "trackingLevel": "basic"
+    },
+    "notifications": {
+      "email": false,
+      "sms": false,
+      "push": false
+    }
+  }
+}
