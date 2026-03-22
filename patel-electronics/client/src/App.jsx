@@ -4,6 +4,9 @@ import ProductDetail from './ProductDetail';
 import Store from './Store';
 import Support from './Support';
 import Cart from './Cart';
+import Checkout from './Checkout';
+import OrderConfirmation from './OrderConfirmation';
+import UserOrders from './UserOrders';
 import Login from './Login';
 import Profile from './Profile';
 import AdminLogin from './AdminLogin';
@@ -16,6 +19,7 @@ import AdminAnalytics from './AdminAnalytics';
 import { AuthProvider, useAuth } from './auth-context.jsx';
 import { AdminAuthProvider } from './admin-auth.jsx';
 import { useCollections, useProducts } from './useFirebaseData';
+import { CartProvider, useCart } from './cart-context.jsx';
 
 const fallbackCollections = [
   {
@@ -147,9 +151,9 @@ const AdminThemeWrapper = ({ children }) => (
 );
 
 function AppWithAuth() {
-  const { isAuthenticated, isLoading, user } = useAuth();
+  const { isAuthenticated, isLoading } = useAuth();
   const [checkoutStatus, setCheckoutStatus] = useState('idle');
-  const [cartItems, setCartItems] = useState([]);
+  const { getCartItemCount, addToCart, subtotal, shipping, tax, total } = useCart();
   
   // Use Firebase real-time data
   const { collections: firebaseCollections, loading: collectionsLoading } = useCollections();
@@ -276,37 +280,7 @@ function AppWithAuth() {
   const collections = firebaseCollections.length > 0 ? firebaseCollections : fallbackCollections;
   const products = firebaseProducts.length > 0 ? firebaseProducts : fallbackProducts;
 
-  useEffect(() => {
-    // Load cart from localStorage
-    const savedCart = localStorage.getItem('patelElectronicsCart');
-    if (savedCart) {
-      setCartItems(JSON.parse(savedCart));
-    }
-  }, []);
-
-  const addToCart = (product, quantity = 1) => {
-    setCartItems(prevItems => {
-      const existingItem = prevItems.find(item => item.id === product.id);
-      if (existingItem) {
-        return prevItems.map(item =>
-          item.id === product.id
-            ? { ...item, quantity: item.quantity + quantity }
-            : item
-        );
-      } else {
-        return [...prevItems, { ...product, quantity }];
-      }
-    });
-  };
-
-  const getCartItemCount = () => {
-    return cartItems.reduce((sum, item) => sum + item.quantity, 0);
-  };
-
-  useEffect(() => {
-    // Save cart to localStorage whenever it changes
-    localStorage.setItem('patelElectronicsCart', JSON.stringify(cartItems));
-  }, [cartItems]);
+  // Cart logic has been moved to CartContext
 
   useEffect(() => {
     const controller = new AbortController();
@@ -343,17 +317,7 @@ function AppWithAuth() {
     return () => controller.abort();
   }, []);
 
-  const totals = useMemo(() => {
-    const subtotal = products.reduce((sum, product) => sum + product.price, 0);
-    const shipping = subtotal > 0 ? 45 : 0;
-    const tax = subtotal * 0.08;
-    return {
-      subtotal,
-      shipping,
-      tax,
-      total: subtotal + shipping + tax
-    };
-  }, [products]);
+  // Totals are now fetched natively from CartContext
 
   const handleCheckout = async (event) => {
     event.preventDefault();
@@ -396,6 +360,9 @@ function AppWithAuth() {
         <Route path="/stores" element={<Store />} />
         <Route path="/support" element={<Support />} />
         <Route path="/cart" element={<Cart />} />
+        <Route path="/checkout" element={<Checkout />} />
+        <Route path="/order-confirmation" element={<OrderConfirmation />} />
+        <Route path="/my-orders" element={<UserOrders />} />
         <Route path="/login" element={<Login />} />
         <Route path="/profile" element={<Profile />} />
         <Route path="/admin/login" element={<AdminThemeWrapper><AdminLogin /></AdminThemeWrapper>} />
@@ -424,7 +391,10 @@ function AppWithAuth() {
             <Link to="/support" className="text-button">Support</Link>
             <Link to="/cart" className="text-button">Cart ({getCartItemCount()})</Link>
             {isAuthenticated ? (
-              <Link to="/profile" className="text-button">Profile</Link>
+              <>
+                <Link to="/my-orders" className="text-button">My Orders</Link>
+                <Link to="/profile" className="text-button">Profile</Link>
+              </>
             ) : (
               <Link to="/login" className="text-button">Sign In</Link>
             )}
@@ -518,7 +488,7 @@ function AppWithAuth() {
                   </div>
                   <div className="product-footer">
                     <span className="price">${product.price.toLocaleString()}</span>
-                    <button className="primary" onClick={(e) => e.preventDefault()}>Add to Cart</button>
+                    <button className="primary" onClick={(e) => { e.preventDefault(); addToCart(product); }}>Add to Cart</button>
                   </div>
                 </article>
               </Link>
@@ -545,19 +515,19 @@ function AppWithAuth() {
               </p>
               <div className="summary-line">
                 <span>Subtotal</span>
-                <span>${totals.subtotal.toFixed(2)}</span>
+                <span>${subtotal.toFixed(2)}</span>
               </div>
               <div className="summary-line">
                 <span>Delivery</span>
-                <span>${totals.shipping.toFixed(2)}</span>
+                <span>${shipping.toFixed(2)}</span>
               </div>
               <div className="summary-line">
                 <span>Tax</span>
-                <span>${totals.tax.toFixed(2)}</span>
+                <span>${tax.toFixed(2)}</span>
               </div>
               <div className="summary-total">
                 <span>Total</span>
-                <span>${totals.total.toFixed(2)}</span>
+                <span>${total.toFixed(2)}</span>
               </div>
             </div>
             <form className="payment-form" onSubmit={handleCheckout}>
@@ -619,9 +589,11 @@ function AppWithAuth() {
 export default function App() {
   return (
     <AuthProvider>
-      <AdminAuthProvider>
-        <AppWithAuth />
-      </AdminAuthProvider>
+      <CartProvider>
+        <AdminAuthProvider>
+          <AppWithAuth />
+        </AdminAuthProvider>
+      </CartProvider>
     </AuthProvider>
   );
 }

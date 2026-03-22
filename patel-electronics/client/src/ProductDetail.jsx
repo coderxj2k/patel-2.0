@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { useAuth } from './auth-context.jsx';
 import { getApplianceImage } from './imageUtils';
+import { useCart } from './cart-context.jsx';
 
 const fallbackProducts = [
   {
@@ -129,6 +130,7 @@ const fallbackProducts = [
 export default function ProductDetail() {
   const { productId } = useParams();
   const { isAuthenticated, user } = useAuth();
+  const { addToCart } = useCart();
   const [product, setProduct] = useState(null);
   const [selectedImage, setSelectedImage] = useState(0);
   const [quantity, setQuantity] = useState(1);
@@ -153,27 +155,13 @@ export default function ProductDetail() {
     }
 
     setCartStatus('adding');
+    addToCart(product, quantity);
     
-    // Get current cart from localStorage
-    const currentCart = JSON.parse(localStorage.getItem('patelElectronicsCart') || '[]');
-    
-    // Add product to cart
-    const existingItem = currentCart.find(item => item.id === product.id);
-    if (existingItem) {
-      existingItem.quantity += quantity;
-    } else {
-      currentCart.push({ ...product, quantity });
-    }
-    
-    // Save to localStorage
-    localStorage.setItem('patelElectronicsCart', JSON.stringify(currentCart));
-    
-    // Simulate adding to cart
+    // Simulate API delay for UX
     setTimeout(() => {
       setCartStatus('added');
-      alert(`${product.name} added to cart! Quantity: ${quantity}`);
       setTimeout(() => setCartStatus('idle'), 2000);
-    }, 1000);
+    }, 500);
   };
 
   const handleBuyNow = () => {

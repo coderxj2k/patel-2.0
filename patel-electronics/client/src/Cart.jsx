@@ -1,6 +1,7 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from './auth-context.jsx';
+import { useCart } from './cart-context.jsx';
 
 const fallbackProducts = [
   {
@@ -46,45 +47,11 @@ const fallbackProducts = [
 ];
 
 export default function Cart() {
-  const { isAuthenticated, user } = useAuth();
-  const [cartItems, setCartItems] = useState([]);
+  const { isAuthenticated } = useAuth();
+  const { cartItems, updateQuantity, removeFromCart, clearCart, subtotal, shipping, tax, total } = useCart();
   const [promoCode, setPromoCode] = useState('');
   const [discount, setDiscount] = useState(0);
   const navigate = useNavigate();
-
-  useEffect(() => {
-    // Load cart from localStorage
-    const savedCart = localStorage.getItem('patelElectronicsCart');
-    if (savedCart) {
-      setCartItems(JSON.parse(savedCart));
-    }
-  }, []);
-
-  useEffect(() => {
-    // Save cart to localStorage whenever it changes
-    localStorage.setItem('patelElectronicsCart', JSON.stringify(cartItems));
-  }, [cartItems]);
-
-  const updateQuantity = (productId, newQuantity) => {
-    if (newQuantity === 0) {
-      removeFromCart(productId);
-      return;
-    }
-    
-    setCartItems(prevItems =>
-      prevItems.map(item =>
-        item.id === productId ? { ...item, quantity: newQuantity } : item
-      )
-    );
-  };
-
-  const removeFromCart = (productId) => {
-    setCartItems(prevItems => prevItems.filter(item => item.id !== productId));
-  };
-
-  const clearCart = () => {
-    setCartItems([]);
-  };
 
   const applyPromoCode = () => {
     if (promoCode.toLowerCase() === 'save10') {
@@ -98,11 +65,8 @@ export default function Cart() {
     }
   };
 
-  const subtotal = cartItems.reduce((sum, item) => sum + (item.price * item.quantity), 0);
-  const shipping = subtotal > 0 ? 45 : 0;
-  const tax = subtotal * 0.08;
   const discountAmount = subtotal * discount;
-  const total = subtotal + shipping + tax - discountAmount;
+  const finalTotal = total - discountAmount;
 
   const getProductDetails = (productId) => {
     return fallbackProducts.find(p => p.id === productId);
@@ -113,8 +77,12 @@ export default function Cart() {
       alert('Your cart is empty!');
       return;
     }
-    alert('Proceeding to checkout...');
-    // In a real app, this would navigate to a checkout page
+    if (!isAuthenticated) {
+      alert('Please log in to proceed to checkout.');
+      navigate('/login');
+      return;
+    }
+    navigate('/checkout');
   };
 
   return (
@@ -230,7 +198,7 @@ export default function Cart() {
                 
                 <div className="summary-total">
                   <span>Total</span>
-                  <span>${total.toFixed(2)}</span>
+                  <span>${finalTotal.toFixed(2)}</span>
                 </div>
 
                 <div className="promo-code">

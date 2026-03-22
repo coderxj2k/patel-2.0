@@ -2,10 +2,12 @@ import { useState, useEffect } from 'react';
 import { Link, useSearchParams } from 'react-router-dom';
 import { useProducts, useCollections } from './useFirebaseData';
 import { getApplianceImage } from './imageUtils';
+import { useCart } from './cart-context.jsx';
 
 export default function ProductsPage() {
   const { products, loading: productsLoading } = useProducts();
   const { collections } = useCollections();
+  const { addToCart } = useCart();
   const [searchParams, setSearchParams] = useSearchParams();
   
   const [searchTerm, setSearchTerm] = useState(searchParams.get('search') || '');
@@ -289,7 +291,7 @@ export default function ProductsPage() {
                         Free Delivery
                       </div>
                     </div>
-                    <button className="add-to-cart-btn">Add to Cart</button>
+                    <button className="add-to-cart-btn" onClick={(e) => { e.preventDefault(); addToCart(product); }}>Add to Cart</button>
                   </div>
                 </div>
               ))}

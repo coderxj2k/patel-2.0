@@ -1,5 +1,13 @@
-import { createContext, useContext, useState, useEffect, ReactNode } from 'react';
-import { generateGoogleAuthUrl, exchangeCodeForTokens, getGoogleUserInfo } from './google-auth';
+import { createContext, useContext, useState, useEffect } from 'react';
+import { 
+  signInWithEmailAndPassword, 
+  createUserWithEmailAndPassword, 
+  signOut, 
+  onAuthStateChanged,
+  GoogleAuthProvider,
+  signInWithPopup
+} from 'firebase/auth';
+import { auth } from './firebase-config';
 
 const AuthContext = createContext();
 
@@ -18,132 +26,65 @@ export const AuthProvider = ({ children }) => {
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    // Check for existing session on mount
-    const savedUser = localStorage.getItem('patelElectronicsUser');
-    const savedTokens = localStorage.getItem('patelElectronicsTokens');
-    
-    if (savedUser && savedTokens) {
-      try {
-        setUser(JSON.parse(savedUser));
+    // True Firebase Observer
+    const unsubscribe = onAuthStateChanged(auth, (firebaseUser) => {
+      if (firebaseUser) {
+        setUser(firebaseUser);
         setIsAuthenticated(true);
-      } catch (error) {
-        console.error('Error parsing saved user data:', error);
-        clearAuthData();
+      } else {
+        setUser(null);
+        setIsAuthenticated(false);
       }
-    }
-    
-    // Check for OAuth callback
-    const urlParams = new URLSearchParams(window.location.search);
-    const code = urlParams.get('code');
-    const errorParam = urlParams.get('error');
-    
-    if (errorParam) {
-      setError('Authentication failed: ' + errorParam);
       setIsLoading(false);
-      // Clean URL
-      window.history.replaceState({}, document.title, window.location.pathname);
-      return;
-    }
-    
-    if (code) {
-      handleGoogleCallback(code);
-    } else {
-      setIsLoading(false);
-    }
+    });
+
+    return () => unsubscribe();
   }, []);
 
-  const handleGoogleCallback = async (code) => {
+  const loginWithGoogle = async () => {
     setIsLoading(true);
     setError(null);
-    
     try {
-      // Exchange authorization code for tokens
-      const tokenResponse = await exchangeCodeForTokens(code);
-      
-      // Get user info
-      const userInfo = await getGoogleUserInfo(tokenResponse.access_token);
-      
-      // Save user data and tokens
-      setUser(userInfo);
-      setIsAuthenticated(true);
-      localStorage.setItem('patelElectronicsUser', JSON.stringify(userInfo));
-      localStorage.setItem('patelElectronicsTokens', JSON.stringify(tokenResponse));
-      
-      // Clean URL
-      window.history.replaceState({}, document.title, window.location.pathname);
-      
-    } catch (error) {
-      console.error('Google OAuth callback error:', error);
-      setError('Failed to authenticate with Google');
-      clearAuthData();
+      const provider = new GoogleAuthProvider();
+      await signInWithPopup(auth, provider);
+    } catch (err) {
+      console.error('Google login error:', err);
+      setError('Failed to login with Google.');
     } finally {
       setIsLoading(false);
     }
-  };
-
-  const loginWithGoogle = () => {
-    // Generate Google OAuth URL and redirect
-    const authUrl = generateGoogleAuthUrl({
-      clientId: 'demo-google-client-id.apps.googleusercontent.com', // Replace with actual client ID
-      redirectUri: window.location.origin,
-      scope: 'openid email profile',
-      responseType: 'code',
-      accessType: 'offline',
-      prompt: 'consent'
-    });
-    
-    window.location.href = authUrl;
   };
 
   const loginWithEmail = async (email, password) => {
     setIsLoading(true);
     setError(null);
-    
     try {
-      // Simulate email login (in production, this would call your backend)
-      await new Promise(resolve => setTimeout(resolve, 1000));
-      
-      // Create mock user for demo
-      const mockUser = {
-        id: 'email_' + Date.now(),
-        email: email,
-        name: email.split('@')[0].replace('.', ' ').replace(/\b\w/g, l => l.toUpperCase()),
-        picture: `https://picsum.photos/seed/${email}/200/200.jpg`,
-        given_name: email.split('@')[0].split('.')[0],
-        family_name: email.split('@')[0].split('.')[1] || 'User',
-        verified_email: true
-      };
-      
-      const mockTokens = {
-        access_token: 'demo_email_token_' + Date.now(),
-        refresh_token: 'demo_email_refresh_' + Date.now(),
-        expires_in: 3600,
-        token_type: 'Bearer'
-      };
-      
-      setUser(mockUser);
-      setIsAuthenticated(true);
-      localStorage.setItem('patelElectronicsUser', JSON.stringify(mockUser));
-      localStorage.setItem('patelElectronicsTokens', JSON.stringify(mockTokens));
-      
-    } catch (error) {
-      console.error('Email login error:', error);
-      setError('Failed to login with email');
+      // First try to sign in normally
+      try {
+        await signInWithEmailAndPassword(auth, email, password);
+      } catch (signInErr) {
+        // If the user does not exist natively, quietly create the account
+        // This makes it seamless for testing!
+        if (signInErr.code === 'auth/user-not-found' || signInErr.code === 'auth/invalid-credential') {
+            await createUserWithEmailAndPassword(auth, email, password);
+        } else {
+            throw signInErr;
+        }
+      }
+    } catch (err) {
+      console.error('Email login error:', err);
+      setError(err.message || 'Failed to login with email and password.');
     } finally {
       setIsLoading(false);
     }
   };
 
-  const logout = () => {
-    clearAuthData();
-    setUser(null);
-    setIsAuthenticated(false);
-    setError(null);
-  };
-
-  const clearAuthData = () => {
-    localStorage.removeItem('patelElectronicsUser');
-    localStorage.removeItem('patelElectronicsTokens');
+  const logout = async () => {
+    try {
+      await signOut(auth);
+    } catch (err) {
+      console.error('Logout error:', err);
+    }
   };
 
   const value = {
@@ -160,6 +101,5 @@ export const AuthProvider = ({ children }) => {
     <AuthContext.Provider value={value}>
       {children}
     </AuthContext.Provider>
-    
   );
 };
