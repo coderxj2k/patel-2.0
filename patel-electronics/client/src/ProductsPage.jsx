@@ -3,6 +3,7 @@ import { Link, useSearchParams } from 'react-router-dom';
 import { useProducts, useCollections } from './useFirebaseData';
 import { getApplianceImage } from './imageUtils';
 import { useCart } from './cart-context.jsx';
+import Navbar from './Navbar.jsx';
 
 export default function ProductsPage() {
   const { products, loading: productsLoading } = useProducts();
@@ -32,10 +33,10 @@ export default function ProductsPage() {
     const matchesCategory = selectedCategory === 'all' || product.category === selectedCategory;
     
     let matchesPrice = true;
-    if (priceRange === '0-500') matchesPrice = product.price <= 500;
-    else if (priceRange === '500-1000') matchesPrice = product.price > 500 && product.price <= 1000;
-    else if (priceRange === '1000-1500') matchesPrice = product.price > 1000 && product.price <= 1500;
-    else if (priceRange === '1500+') matchesPrice = product.price > 1500;
+    if (priceRange === '0-500') matchesPrice = product.price <= 41500;
+    else if (priceRange === '500-1000') matchesPrice = product.price > 41500 && product.price <= 83000;
+    else if (priceRange === '1000-1500') matchesPrice = product.price > 83000 && product.price <= 124500;
+    else if (priceRange === '1500+') matchesPrice = product.price > 124500;
     
     return matchesSearch && matchesCategory && matchesPrice;
   });
@@ -76,17 +77,7 @@ export default function ProductsPage() {
           <div className="blob blob-1"></div>
           <div className="blob blob-2"></div>
         </div>
-      <header className="top-bar">
-        <div className="brand">
-          <Link to="/">Patel Electronics</Link>
-        </div>
-        <nav className="top-actions">
-          <Link to="/stores" className="text-button">Stores</Link>
-          <Link to="/support" className="text-button">Support</Link>
-          <Link to="/cart" className="text-button">Cart</Link>
-          <Link to="/login" className="text-button">Sign In</Link>
-        </nav>
-      </header>
+      <Navbar />
 
       <div className="products-page">
         {/* Header */}
@@ -164,7 +155,7 @@ export default function ProductsPage() {
                   checked={priceRange === '0-500'}
                   onChange={(e) => setPriceRange(e.target.value)}
                 />
-                <span>Under $500</span>
+                <span>Under ₹41,500</span>
               </label>
               <label className="filter-option">
                 <input
@@ -174,7 +165,7 @@ export default function ProductsPage() {
                   checked={priceRange === '500-1000'}
                   onChange={(e) => setPriceRange(e.target.value)}
                 />
-                <span>$500 - $1,000</span>
+                <span>₹41,500 - ₹83,000</span>
               </label>
               <label className="filter-option">
                 <input
@@ -184,7 +175,7 @@ export default function ProductsPage() {
                   checked={priceRange === '1000-1500'}
                   onChange={(e) => setPriceRange(e.target.value)}
                 />
-                <span>$1,000 - $1,500</span>
+                <span>₹83,000 - ₹1,24,500</span>
               </label>
               <label className="filter-option">
                 <input
@@ -194,7 +185,7 @@ export default function ProductsPage() {
                   checked={priceRange === '1500+'}
                   onChange={(e) => setPriceRange(e.target.value)}
                 />
-                <span>Over $1,500</span>
+                <span>Over ₹1,24,500</span>
               </label>
             </div>
           </div>
@@ -281,10 +272,10 @@ export default function ProductsPage() {
                   
                   <div className="product-price-row">
                     <div>
-                      <div className="product-price">${product.price.toLocaleString()}</div>
+                      <div className="product-price">₹{product.price.toLocaleString()}</div>
                       {product.originalPrice && (
                         <div style={{ textDecoration: 'line-through', color: 'var(--text-muted)', fontSize: '0.9rem' }}>
-                          ${product.originalPrice.toLocaleString()}
+                          ₹{product.originalPrice.toLocaleString()}
                         </div>
                       )}
                       <div style={{ color: '#00ff80', fontSize: '0.85rem', marginTop: '8px', fontWeight: '700', textTransform: 'uppercase', letterSpacing: '0.05em' }}>

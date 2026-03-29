@@ -14,7 +14,11 @@ export default function AdminLogin() {
     const result = await loginAsAdmin(email, password);
     
     if (result.success) {
-      navigate('/admin/dashboard');
+      if (result.role === 'sales') {
+        navigate('/admin/orders');
+      } else {
+        navigate('/admin/dashboard');
+      }
     }
   };
 

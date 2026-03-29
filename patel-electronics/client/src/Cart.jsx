@@ -2,14 +2,15 @@ import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from './auth-context.jsx';
 import { useCart } from './cart-context.jsx';
+import Navbar from './Navbar.jsx';
 
 const fallbackProducts = [
   {
     id: 'frostline-fridge',
     name: 'Frostline Smart Fridge',
     description: 'Counter-depth cooling with adaptive humidity drawers.',
-    price: 1299,
-    image: 'https://images.unsplash.com/photo-1584243027496-9645097a0054?w=800&h=600&fit=crop',
+    price: 107817,
+    image: '/images/fridge.png',
     category: 'Cold Storage',
     brand: 'Frostline',
     inStock: true
@@ -18,8 +19,8 @@ const fallbackProducts = [
     id: 'airstream-ac',
     name: 'Airstream Climate System',
     description: 'Whisper-quiet climate control for modern spaces.',
-    price: 899,
-    image: 'https://images.unsplash.com/photo-1580837119756-563d608dd119?w=800&h=600&fit=crop',
+    price: 74617,
+    image: '/images/ac.png',
     category: 'Climate Control',
     brand: 'Airstream',
     inStock: true
@@ -28,8 +29,8 @@ const fallbackProducts = [
     id: 'silkguard-washer',
     name: 'Silkguard Washer',
     description: 'Precision fabric care with steam sanitization.',
-    price: 749,
-    image: 'https://images.unsplash.com/photo-1558618047-3c8c76ca7d13?w=800&h=600&fit=crop',
+    price: 62167,
+    image: '/images/washer.png',
     category: 'Fabric Care',
     brand: 'Silkguard',
     inStock: true
@@ -38,8 +39,8 @@ const fallbackProducts = [
     id: 'cinema-view-oled',
     name: 'CinemaView OLED',
     description: 'Ultra-thin 65" display with cinematic clarity.',
-    price: 1599,
-    image: 'https://images.unsplash.com/photo-1596786350986-224a6375b5fa?w=800&h=600&fit=crop',
+    price: 132717,
+    image: '/images/tv.png',
     category: 'Visual Arts',
     brand: 'CinemaView',
     inStock: true
@@ -87,23 +88,7 @@ export default function Cart() {
 
   return (
     <div className="page">
-      <header className="top-bar">
-        <div className="brand">
-          <Link to="/">Patel Electronics</Link>
-        </div>
-        <nav className="top-actions">
-          <Link to="/stores" className="text-button">Stores</Link>
-          <Link to="/support" className="text-button">Support</Link>
-          <Link to="/cart" className="text-button active">
-            Cart ({cartItems.reduce((sum, item) => sum + item.quantity, 0)})
-          </Link>
-          {isAuthenticated ? (
-            <Link to="/profile" className="text-button">Profile</Link>
-          ) : (
-            <Link to="/login" className="text-button">Sign In</Link>
-          )}
-        </nav>
-      </header>
+      <Navbar />
 
       <div className="cart-container">
         <section className="cart-header">
@@ -134,7 +119,7 @@ export default function Cart() {
                       <p className="item-brand">{product?.brand}</p>
                       <p className="item-category">{product?.category}</p>
                       <p className="item-description">{product?.description}</p>
-                      <p className="item-price">${product?.price.toLocaleString()}</p>
+                      <p className="item-price">₹{product?.price.toLocaleString()}</p>
                     </div>
 
                     <div className="item-quantity">
@@ -157,7 +142,7 @@ export default function Cart() {
 
                     <div className="item-total">
                       <p className="total-label">Total:</p>
-                      <p className="total-price">${(product?.price * item.quantity).toLocaleString()}</p>
+                      <p className="total-price">₹{(product?.price * item.quantity).toLocaleString()}</p>
                       <button 
                         className="remove-button"
                         onClick={() => removeFromCart(item.id)}
@@ -176,29 +161,29 @@ export default function Cart() {
                 
                 <div className="summary-line">
                   <span>Subtotal ({cartItems.reduce((sum, item) => sum + item.quantity, 0)} items)</span>
-                  <span>${subtotal.toFixed(2)}</span>
+                  <span>₹{subtotal.toFixed(2)}</span>
                 </div>
                 
                 <div className="summary-line">
                   <span>Shipping</span>
-                  <span>${shipping.toFixed(2)}</span>
+                  <span>₹{shipping.toFixed(2)}</span>
                 </div>
                 
                 <div className="summary-line">
                   <span>Tax</span>
-                  <span>${tax.toFixed(2)}</span>
+                  <span>₹{tax.toFixed(2)}</span>
                 </div>
                 
                 {discount > 0 && (
                   <div className="summary-line discount">
                     <span>Discount ({(discount * 100).toFixed(0)}%)</span>
-                    <span>-${discountAmount.toFixed(2)}</span>
+                    <span>-₹{discountAmount.toFixed(2)}</span>
                   </div>
                 )}
                 
                 <div className="summary-total">
                   <span>Total</span>
-                  <span>${finalTotal.toFixed(2)}</span>
+                  <span>₹{finalTotal.toFixed(2)}</span>
                 </div>
 
                 <div className="promo-code">
@@ -354,7 +339,7 @@ export default function Cart() {
           display: flex;
           align-items: center;
           gap: 0.5rem;
-          background: var(--cream);
+          background: rgba(255, 255, 255, 0.05);
           border-radius: 8px;
           padding: 0.25rem;
         }
@@ -472,7 +457,7 @@ export default function Cart() {
         .promo-code button {
           padding: 0.75rem 1rem;
           background: var(--dark);
-          color: var(--cream);
+          color: #fff;
           border: none;
           border-radius: 8px;
           cursor: pointer;
@@ -509,7 +494,7 @@ export default function Cart() {
         }
 
         .cart-actions button:hover {
-          background: var(--cream);
+          background: rgba(255, 255, 255, 0.05);
         }
 
         @media (max-width: 1024px) {

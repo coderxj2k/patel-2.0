@@ -10,6 +10,19 @@ export default function AdminDashboard() {
   const [orders, setOrders] = useState([]);
   const [customers, setCustomers] = useState([]);
   const [products, setProducts] = useState([]);
+  const [showPermissionModal, setShowPermissionModal] = useState(false);
+
+  const handleProductsClick = (e) => {
+    if (admin?.role !== 'admin') {
+      e.preventDefault();
+      setShowPermissionModal(true);
+    } else {
+      // Allow navigation or manual navigate
+      if (!e.target.href) {
+        navigate('/admin/products');
+      }
+    }
+  };
 
   useEffect(() => {
     if (!admin) {
@@ -24,36 +37,36 @@ export default function AdminDashboard() {
   const loadDashboardData = () => {
     // Demo sales data
     const demoSales = [
-      { id: 1, date: '2024-03-20', amount: 1299, product: 'Frostline Smart Fridge', customer: 'John Doe' },
-      { id: 2, date: '2024-03-20', amount: 899, product: 'Silkguard Washer', customer: 'Jane Smith' },
-      { id: 3, date: '2024-03-19', amount: 1599, product: 'CinemaView OLED TV', customer: 'Mike Johnson' },
-      { id: 4, date: '2024-03-19', amount: 699, product: 'AirPure Pro', customer: 'Sarah Williams' },
-      { id: 5, date: '2024-03-18', amount: 499, product: 'PowerStation Elite', customer: 'Tom Brown' }
+      { id: 1, date: '2024-03-20', amount: 107817, product: 'Frostline Smart Fridge', customer: 'John Doe' },
+      { id: 2, date: '2024-03-20', amount: 74617, product: 'Silkguard Washer', customer: 'Jane Smith' },
+      { id: 3, date: '2024-03-19', amount: 132717, product: 'CinemaView OLED TV', customer: 'Mike Johnson' },
+      { id: 4, date: '2024-03-19', amount: 58017, product: 'AirPure Pro', customer: 'Sarah Williams' },
+      { id: 5, date: '2024-03-18', amount: 41417, product: 'PowerStation Elite', customer: 'Tom Brown' }
     ];
 
     // Demo orders
     const demoOrders = [
-      { id: 'ORD001', customer: 'John Doe', date: '2024-03-20', status: 'delivered', total: 1299, items: 1 },
-      { id: 'ORD002', customer: 'Jane Smith', date: '2024-03-20', status: 'processing', total: 899, items: 1 },
-      { id: 'ORD003', customer: 'Mike Johnson', date: '2024-03-19', status: 'shipped', total: 1599, items: 1 },
-      { id: 'ORD004', customer: 'Sarah Williams', date: '2024-03-19', status: 'pending', total: 699, items: 1 }
+      { id: 'ORD001', customer: 'John Doe', date: '2024-03-20', status: 'delivered', total: 107817, items: 1 },
+      { id: 'ORD002', customer: 'Jane Smith', date: '2024-03-20', status: 'processing', total: 74617, items: 1 },
+      { id: 'ORD003', customer: 'Mike Johnson', date: '2024-03-19', status: 'shipped', total: 132717, items: 1 },
+      { id: 'ORD004', customer: 'Sarah Williams', date: '2024-03-19', status: 'pending', total: 58017, items: 1 }
     ];
 
     // Demo customers
     const demoCustomers = [
-      { id: 1, name: 'John Doe', email: 'john@example.com', orders: 3, totalSpent: 3897 },
-      { id: 2, name: 'Jane Smith', email: 'jane@example.com', orders: 2, totalSpent: 1798 },
-      { id: 3, name: 'Mike Johnson', email: 'mike@example.com', orders: 1, totalSpent: 1599 },
-      { id: 4, name: 'Sarah Williams', email: 'sarah@example.com', orders: 4, totalSpent: 2796 }
+      { id: 1, name: 'John Doe', email: 'john@example.com', orders: 3, totalSpent: 323451 },
+      { id: 2, name: 'Jane Smith', email: 'jane@example.com', orders: 2, totalSpent: 149234 },
+      { id: 3, name: 'Mike Johnson', email: 'mike@example.com', orders: 1, totalSpent: 132717 },
+      { id: 4, name: 'Sarah Williams', email: 'sarah@example.com', orders: 4, totalSpent: 232068 }
     ];
 
     // Demo products
     const demoProducts = [
-      { id: 1, name: 'Frostline Smart Fridge', category: 'Cold Storage', stock: 15, price: 1299 },
-      { id: 2, name: 'Silkguard Washer', category: 'Fabric Care', stock: 8, price: 899 },
-      { id: 3, name: 'CinemaView OLED TV', category: 'Entertainment', stock: 3, price: 1599 },
-      { id: 4, name: 'AirPure Pro', category: 'Air Care', stock: 12, price: 699 },
-      { id: 5, name: 'PowerStation Elite', category: 'Small Appliances', stock: 20, price: 499 }
+      { id: 1, name: 'Frostline Smart Fridge', category: 'Cold Storage', stock: 15, price: 107817 },
+      { id: 2, name: 'Silkguard Washer', category: 'Fabric Care', stock: 8, price: 74617 },
+      { id: 3, name: 'CinemaView OLED TV', category: 'Entertainment', stock: 3, price: 132717 },
+      { id: 4, name: 'AirPure Pro', category: 'Air Care', stock: 12, price: 58017 },
+      { id: 5, name: 'PowerStation Elite', category: 'Small Appliances', stock: 20, price: 41417 }
     ];
 
     setSalesData(demoSales);
@@ -95,7 +108,7 @@ export default function AdminDashboard() {
           </div>
           
           <div className="pm-nav-menu">
-            <Link to="/admin/products" className="pm-nav-link">
+            <Link to="/admin/products" className="pm-nav-link" onClick={handleProductsClick}>
               <span className="pm-nav-icon">📦</span>
               Products
             </Link>
@@ -137,8 +150,8 @@ export default function AdminDashboard() {
             <p>Welcome back! Here's what's happening with your store today.</p>
           </div>
           <div className="pm-actions">
-            <button className="pm-btn pm-btn-primary" onClick={() => navigate('/admin/products')}>
-              <span className="pm-btn-icon">📦</span>
+            <button className="pm-btn pm-btn-primary" onClick={handleProductsClick}>
+              <span className="pm-nav-icon" style={{marginRight: '8px'}}>📦</span>
               Manage Products
             </button>
           </div>
@@ -152,7 +165,7 @@ export default function AdminDashboard() {
             <span>💰</span>
           </div>
           <div className="pm-stat-content">
-            <h3>${salesData.reduce((sum, sale) => sum + sale.amount, 0).toLocaleString()}</h3>
+            <h3>₹{salesData.reduce((sum, sale) => sum + sale.amount, 0).toLocaleString()}</h3>
             <p>Total Revenue</p>
           </div>
         </div>
@@ -220,7 +233,7 @@ export default function AdminDashboard() {
                           </span>
                         </td>
                         <td>
-                          <span className="pm-price">${order.total}</span>
+                          <span className="pm-price">₹{order.total}</span>
                         </td>
                       </tr>
                     ))}
@@ -234,7 +247,7 @@ export default function AdminDashboard() {
           <div className="pm-card">
             <div className="pm-card-header">
               <h2>Top Products</h2>
-              <Link to="/admin/products" className="pm-card-link">View All</Link>
+              <Link to="/admin/products" className="pm-card-link" onClick={handleProductsClick}>View All</Link>
             </div>
             <div className="pm-card-content">
               <div className="pm-table-container">
@@ -260,7 +273,7 @@ export default function AdminDashboard() {
                           </span>
                         </td>
                         <td>
-                          <span className="pm-price">${product.price}</span>
+                          <span className="pm-price">₹{product.price}</span>
                         </td>
                       </tr>
                     ))}
@@ -299,7 +312,7 @@ export default function AdminDashboard() {
                         <td>{customer.email}</td>
                         <td>{customer.orders}</td>
                         <td>
-                          <span className="pm-price">${customer.totalSpent}</span>
+                          <span className="pm-price">₹{customer.totalSpent}</span>
                         </td>
                       </tr>
                     ))}
@@ -334,7 +347,7 @@ export default function AdminDashboard() {
                   </div>
                   <div className="pm-chart-legend">
                     <span className="pm-chart-title">Weekly Sales</span>
-                    <span className="pm-chart-value">${(Math.random() * 10000 + 5000).toFixed(0)}</span>
+                    <span className="pm-chart-value">₹{(Math.random() * 10000 + 5000).toFixed(0)}</span>
                   </div>
                 </div>
               </div>
@@ -342,6 +355,34 @@ export default function AdminDashboard() {
           </div>
         </div>
       </div>
+
+      {/* Permission Modal */}
+      {showPermissionModal && (
+        <div className="pm-modal-overlay">
+          <div className="pm-modal">
+            <div className="pm-modal-header">
+              <h2>Access Denied</h2>
+              <button className="pm-modal-close" onClick={() => setShowPermissionModal(false)}>×</button>
+            </div>
+            <div className="pm-modal-content">
+              <div className="pm-error-icon-large">🔒</div>
+              <p className="pm-modal-message">to edit and manage the products login to admin account</p>
+            </div>
+            <div className="pm-modal-actions">
+              <button className="pm-btn pm-btn-secondary" onClick={() => setShowPermissionModal(false)}>
+                Cancel
+              </button>
+              <button className="pm-btn pm-btn-primary" onClick={() => {
+                setShowPermissionModal(false);
+                logout();
+                navigate('/admin/login');
+              }}>
+                Login as Admin
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
 
       <style jsx>{`
         .admin-dashboard {
@@ -792,6 +833,106 @@ export default function AdminDashboard() {
             width: 100%;
             justify-content: center;
           }
+        }
+        
+        /* Modal Styles */
+        .pm-modal-overlay {
+          position: fixed;
+          top: 0;
+          left: 0;
+          right: 0;
+          bottom: 0;
+          background: rgba(0, 0, 0, 0.5);
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          z-index: 1000;
+          padding: 1rem;
+        }
+
+        .pm-modal {
+          background: white;
+          border-radius: 12px;
+          width: 100%;
+          max-width: 450px;
+          box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+          animation: slideUp 0.3s ease-out;
+        }
+
+        @keyframes slideUp {
+          from { opacity: 0; transform: translateY(20px); }
+          to { opacity: 1; transform: translateY(0); }
+        }
+
+        .pm-modal-header {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          padding: 1.5rem;
+          border-bottom: 1px solid #e5e7eb;
+        }
+
+        .pm-modal-header h2 {
+          font-size: 1.25rem;
+          font-weight: 600;
+          color: #111827;
+          margin: 0;
+        }
+
+        .pm-modal-close {
+          background: transparent;
+          border: none;
+          font-size: 1.5rem;
+          color: #6b7280;
+          cursor: pointer;
+          transition: color 0.2s;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          width: 32px;
+          height: 32px;
+          border-radius: 8px;
+        }
+
+        .pm-modal-close:hover {
+          background: #f3f4f6;
+          color: #111827;
+        }
+
+        .pm-modal-content {
+          padding: 2rem 1.5rem;
+          text-align: center;
+        }
+        
+        .pm-error-icon-large {
+          font-size: 3rem;
+          margin-bottom: 1rem;
+        }
+
+        .pm-modal-message {
+          font-size: 1.1rem;
+          color: #374151;
+          margin: 0;
+        }
+
+        .pm-modal-actions {
+          display: flex;
+          justify-content: flex-end;
+          gap: 1rem;
+          padding: 1.5rem;
+          background: #f9fafb;
+          border-top: 1px solid #e5e7eb;
+          border-radius: 0 0 12px 12px;
+        }
+        
+        .pm-btn-secondary {
+          background: white;
+          color: #374151;
+          border: 1px solid #d1d5db;
+        }
+        
+        .pm-btn-secondary:hover {
+          background: #f9fafb;
         }
       `}</style>
     </div>

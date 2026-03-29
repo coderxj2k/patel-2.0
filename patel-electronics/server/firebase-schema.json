@@ -1,0 +1,158 @@
+{
+  "users": {
+    "dummy-uid-1": {
+      "email": "customer@example.com",
+      "password": "hashed_or_plaintext_password",
+      "role": "customer",
+      "createdAt": "2026-03-29T18:00:00.000Z"
+    }
+  },
+  "collections": {
+    "fabric-care": {
+      "id": "fabric-care",
+      "title": "Fabric Care",
+      "description": "Advanced washing systems for delicate textiles.",
+      "createdAt": "2026-03-29T18:00:00.000Z"
+    },
+    "cold-storage": {
+      "id": "cold-storage",
+      "title": "Cold Storage",
+      "description": "Precision cooling for culinary preservation.",
+      "createdAt": "2026-03-29T18:00:00.000Z"
+    },
+    "cooking-tech": {
+      "id": "cooking-tech",
+      "title": "Cooking Technology",
+      "description": "Smart ovens and induction cooking systems.",
+      "createdAt": "2026-03-29T18:00:00.000Z"
+    },
+    "air-care": {
+      "id": "air-care",
+      "title": "Air Care",
+      "description": "Purifiers and climate control solutions.",
+      "createdAt": "2026-03-29T18:00:00.000Z"
+    },
+    "small-appliances": {
+      "id": "small-appliances",
+      "title": "Small Appliances",
+      "description": "Compact solutions for modern kitchens.",
+      "createdAt": "2026-03-29T18:00:00.000Z"
+    },
+    "entertainment": {
+      "id": "entertainment",
+      "title": "Entertainment",
+      "description": "Audio and visual entertainment systems.",
+      "createdAt": "2026-03-29T18:00:00.000Z"
+    }
+  },
+  "products": {
+    "frostline-fridge": {
+      "id": "frostline-fridge",
+      "name": "Frostline Smart Fridge",
+      "description": "Counter-depth cooling with adaptive humidity drawers. Features a modern glass door and built-in ice maker.",
+      "price": 74617,
+      "originalPrice": 107817,
+      "conditionRating": "Good",
+      "damageDescription": "Small scratch on the left side panel. Fully functional.",
+      "warranty": "1 Year Limited Warranty",
+      "category": "Cold Storage",
+      "brand": "Frostline",
+      "inStock": true,
+      "rating": 4.5,
+      "reviews": 218,
+      "image": "/images/fridge.png",
+      "images": ["/images/fridge.png", "/images/fridge.png", "/images/fridge.png", "/images/fridge.png"],
+      "createdAt": "2026-03-29T18:00:00.000Z"
+    },
+    "silkguard-washer": {
+      "id": "silkguard-washer",
+      "name": "Silkguard High-Efficiency Washer",
+      "description": "Ultra-quiet drum with steam cleaning for delicate fabrics. Wi-Fi enabled for smart cycles.",
+      "price": 41417,
+      "originalPrice": 62167,
+      "conditionRating": "Fair",
+      "damageDescription": "Dent on the front door. Operates normally without issues.",
+      "warranty": "6 Months Limited Warranty",
+      "category": "Fabric Care",
+      "brand": "Silkguard",
+      "inStock": true,
+      "rating": 4.7,
+      "reviews": 89,
+      "image": "/images/washer.png",
+      "images": ["/images/washer.png", "/images/washer.png", "/images/washer.png", "/images/washer.png"],
+      "createdAt": "2026-03-29T18:00:00.000Z"
+    },
+    "cinemaview-tv": {
+      "id": "cinemaview-tv",
+      "name": "CinemaView 65\" OLED 4K Smart TV",
+      "description": "Ultra-thin OLED display with cinematic clarity, deep blacks, and Dolby Vision.",
+      "price": 99517,
+      "originalPrice": 132717,
+      "conditionRating": "Good",
+      "damageDescription": "Minor scuffs on the back casing. Screen is absolutely flawless.",
+      "warranty": "1 Year Limited Warranty",
+      "category": "Entertainment",
+      "brand": "CinemaView",
+      "inStock": true,
+      "rating": 4.8,
+      "reviews": 512,
+      "image": "/images/tv.png",
+      "images": ["/images/tv.png", "/images/tv.png", "/images/tv.png", "/images/tv.png"],
+      "createdAt": "2026-03-29T18:00:00.000Z"
+    },
+    "airpure-pro": {
+      "id": "airpure-pro",
+      "name": "AirPure Pro Smart Purifier",
+      "description": "HEPA filtration with smart air quality monitoring and quiet mode.",
+      "price": 41417,
+      "originalPrice": 58017,
+      "conditionRating": "Like New",
+      "damageDescription": "Open box return. No visible marks.",
+      "warranty": "2 Year Manufacturer",
+      "category": "Air Care",
+      "brand": "AirPure",
+      "inStock": true,
+      "rating": 4.3,
+      "reviews": 67,
+      "image": "/images/purifier.png",
+      "images": ["/images/purifier.png", "/images/purifier.png", "/images/purifier.png", "/images/purifier.png"],
+      "createdAt": "2026-03-29T18:00:00.000Z"
+    },
+    "airstream-ac": {
+      "id": "airstream-ac",
+      "name": "Airstream Climate System",
+      "description": "Whisper-quiet climate control for modern spaces.",
+      "price": 74617,
+      "originalPrice": 99517,
+      "conditionRating": "Good",
+      "damageDescription": "Open box return. Fully tested.",
+      "warranty": "2 Year Manufacturer Warranty",
+      "category": "Climate Control",
+      "brand": "Airstream",
+      "inStock": true,
+      "rating": 4.3,
+      "reviews": 89,
+      "image": "/images/ac.png",
+      "images": ["/images/ac.png", "/images/ac.png", "/images/ac.png", "/images/ac.png"],
+      "createdAt": "2026-03-29T18:00:00.000Z"
+    },
+    "powerstation-elite": {
+      "id": "powerstation-elite",
+      "name": "PowerStation Elite",
+      "description": "Solar-compatible backup battery with app control.",
+      "price": 41417,
+      "originalPrice": 49717,
+      "conditionRating": "Like New",
+      "damageDescription": "Original packaging slightly damaged.",
+      "warranty": "5 Year Limited Warranty",
+      "category": "Small Appliances",
+      "brand": "PowerStation",
+      "inStock": true,
+      "rating": 4.6,
+      "reviews": 45,
+      "image": "/images/powerstation.png",
+      "images": ["/images/powerstation.png", "/images/powerstation.png", "/images/powerstation.png", "/images/powerstation.png"],
+      "createdAt": "2026-03-29T18:00:00.000Z"
+    }
+  }
+}

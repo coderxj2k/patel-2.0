@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useAuth } from './auth-context.jsx';
+import Navbar from './Navbar.jsx';
 
 const supportCategories = [
   {
@@ -117,21 +118,7 @@ export default function Support() {
 
   return (
     <div className="page">
-      <header className="top-bar">
-        <div className="brand">
-          <Link to="/">Patel Electronics</Link>
-        </div>
-        <nav className="top-actions">
-          <Link to="/stores" className="text-button">Stores</Link>
-          <Link to="/support" className="text-button active">Support</Link>
-          <Link to="/cart" className="text-button">Cart</Link>
-          {isAuthenticated ? (
-            <Link to="/profile" className="text-button">Profile</Link>
-          ) : (
-            <Link to="/login" className="text-button">Sign In</Link>
-          )}
-        </nav>
-      </header>
+      <Navbar />
 
       <div className="support-container">
         <section className="support-hero">
@@ -305,7 +292,7 @@ export default function Support() {
 
         .support-hero {
           background: linear-gradient(135deg, #15130f 0%, #b7976a 100%);
-          color: var(--cream);
+          color: #fff;
           border-radius: 32px;
           padding: 4rem 3rem;
           margin-bottom: 4rem;
@@ -476,11 +463,11 @@ export default function Support() {
         }
 
         .faq-question:hover {
-          background: var(--cream);
+          background: rgba(255, 255, 255, 0.05);
         }
 
         .faq-question.expanded {
-          background: var(--cream);
+          background: rgba(255, 255, 255, 0.05);
           font-weight: 600;
         }
 

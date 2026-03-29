@@ -39,7 +39,7 @@ export function CartProvider({ children }) {
   const getCartItemCount = () => cartItems.reduce((sum, item) => sum + item.quantity, 0);
 
   const subtotal = cartItems.reduce((sum, item) => sum + (item.price * item.quantity), 0);
-  const shipping = subtotal > 0 ? 45 : 0;
+  const shipping = subtotal > 0 ? 3735 : 0;
   const tax = subtotal * 0.08;
   const total = subtotal + shipping + tax;
 

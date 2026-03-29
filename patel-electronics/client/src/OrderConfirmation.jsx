@@ -1,4 +1,5 @@
 import { useLocation, Link, Navigate } from 'react-router-dom';
+import Navbar from './Navbar.jsx';
 
 export default function OrderConfirmation() {
   const location = useLocation();
@@ -19,11 +20,7 @@ export default function OrderConfirmation() {
         <div className="blob blob-2" style={{ background: isSuccess ? 'rgba(74, 222, 128, 0.15)' : 'rgba(248, 113, 113, 0.15)' }}></div>
       </div>
 
-      <header className="top-bar">
-        <div className="brand">
-          <Link to="/">Patel Electronics</Link>
-        </div>
-      </header>
+      <Navbar />
 
       <main className="confirmation-container">
         <div className="confirmation-card">

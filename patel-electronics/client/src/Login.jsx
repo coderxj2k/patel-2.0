@@ -1,9 +1,10 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useAuth } from './auth-context.jsx';
+import Navbar from './Navbar.jsx';
 
 export default function Login() {
-  const { loginWithGoogle, loginWithEmail, isLoading, error } = useAuth();
+  const { loginWithGoogle, loginWithEmail, signUpWithEmail, isLoading, error } = useAuth();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [isLoginMode, setIsLoginMode] = useState(true);
@@ -12,25 +13,20 @@ export default function Login() {
     loginWithGoogle();
   };
 
-  const handleEmailLogin = async (e) => {
+  const handleEmailAuth = async (e) => {
     e.preventDefault();
     if (email && password) {
-      await loginWithEmail(email, password);
+      if (isLoginMode) {
+        await loginWithEmail(email, password);
+      } else {
+        await signUpWithEmail(email, password);
+      }
     }
   };
 
   return (
     <div className="page">
-      <header className="top-bar">
-        <div className="brand">
-          <Link to="/">Patel Electronics</Link>
-        </div>
-        <nav className="top-actions">
-          <Link to="/stores" className="text-button">Stores</Link>
-          <Link to="/support" className="text-button">Support</Link>
-          <Link to="/cart" className="text-button">Cart</Link>
-        </nav>
-      </header>
+      <Navbar />
 
       <div className="auth-container">
         <div className="auth-card">
@@ -64,19 +60,13 @@ export default function Login() {
                 {isLoading ? 'Loading...' : 'Continue with Google'}
               </button>
 
-              <div className="social-auth">
-                <button className="social-button google" onClick={handleGoogleLogin} disabled={isLoading}>
-                  <span className="social-icon">�</span>
-                  Continue with Google
-                </button>
-              </div>
             </div>
 
             <div className="auth-divider">
               <span>Or continue with email</span>
             </div>
 
-            <form className="auth-form" onSubmit={handleEmailLogin}>
+            <form className="auth-form" onSubmit={handleEmailAuth}>
               <div className="form-group">
                 <label>Email Address</label>
                 <input
@@ -137,7 +127,7 @@ export default function Login() {
                 <span className="benefit-icon">🚚</span>
                 <div>
                   <h4>Free Shipping</h4>
-                  <p>On orders over $50</p>
+                  <p>On orders over ₹4150</p>
                 </div>
               </div>
               <div className="benefit-item">
@@ -309,7 +299,7 @@ export default function Login() {
         }
 
         .social-button:hover {
-          background: var(--cream);
+          background: rgba(255, 255, 255, 0.05);
         }
 
         .social-icon {
@@ -419,7 +409,7 @@ export default function Login() {
           display: flex;
           align-items: center;
           justify-content: center;
-          background: var(--cream);
+          background: rgba(255, 255, 255, 0.05);
           border-radius: 8px;
         }
 

@@ -1,6 +1,7 @@
 import { useAuth } from './auth-context.jsx';
 import { Link, useNavigate } from 'react-router-dom';
 import { useState, useEffect } from 'react';
+import Navbar from './Navbar.jsx';
 
 export default function Profile() {
   const { user, isAuthenticated, isLoading, logout } = useAuth();
@@ -62,17 +63,7 @@ export default function Profile() {
   if (!isAuthenticated) {
     return (
       <div className="page">
-        <header className="top-bar">
-          <div className="brand">
-            <Link to="/">Patel Electronics</Link>
-          </div>
-          <nav className="top-actions">
-            <Link to="/stores" className="text-button">Stores</Link>
-            <Link to="/support" className="text-button">Support</Link>
-            <Link to="/cart" className="text-button">Cart</Link>
-            <Link to="/login" className="text-button">Sign In</Link>
-          </nav>
-        </header>
+        <Navbar />
 
         <div className="auth-required">
           <div className="auth-required-card">
@@ -87,17 +78,7 @@ export default function Profile() {
 
   return (
     <div className="page">
-      <header className="top-bar">
-        <div className="brand">
-          <Link to="/">Patel Electronics</Link>
-        </div>
-        <nav className="top-actions">
-          <Link to="/stores" className="text-button">Stores</Link>
-          <Link to="/support" className="text-button">Support</Link>
-          <Link to="/cart" className="text-button">Cart</Link>
-          <button className="text-button" onClick={handleLogout}>Sign Out</button>
-        </nav>
-      </header>
+      <Navbar />
 
       <div className="profile-container">
         <div className="profile-header">
@@ -236,12 +217,12 @@ export default function Profile() {
                               <h4>{item.name}</h4>
                               <p>Qty: {item.quantity}</p>
                             </div>
-                            <span>${item.price}</span>
+                            <span>₹{item.price}</span>
                           </div>
                         ))}
                       </div>
                       <div className="order-footer">
-                        <span className="order-total">Total: ${order.total}</span>
+                        <span className="order-total">Total: ₹{order.total}</span>
                         <button className="ghost">View Details</button>
                       </div>
                     </div>
@@ -301,7 +282,7 @@ export default function Profile() {
                       <img src={item.image} alt={item.name} />
                       <div className="wishlist-item-info">
                         <h3>{item.name}</h3>
-                        <p>${item.price}</p>
+                        <p>₹{item.price}</p>
                       </div>
                       <div className="wishlist-item-actions">
                         <button className="primary">Add to Cart</button>
@@ -479,7 +460,7 @@ export default function Profile() {
         }
 
         .stat-card {
-          background: var(--cream);
+          background: rgba(255, 255, 255, 0.05);
           padding: 2rem;
           border-radius: 12px;
           text-align: center;
@@ -511,7 +492,7 @@ export default function Profile() {
           gap: 1rem;
           padding: 1rem;
           border-radius: 8px;
-          background: var(--cream);
+          background: rgba(255, 255, 255, 0.05);
         }
 
         .activity-icon {

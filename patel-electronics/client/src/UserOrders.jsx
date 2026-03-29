@@ -2,6 +2,7 @@ import { Link } from 'react-router-dom';
 import { useAuth } from './auth-context.jsx';
 import { useUserOrders } from './useFirebaseData';
 import { getApplianceImage } from './imageUtils';
+import Navbar from './Navbar.jsx';
 
 export default function UserOrders() {
   const { isAuthenticated, user } = useAuth();
@@ -51,17 +52,7 @@ export default function UserOrders() {
         <div className="blob blob-2"></div>
       </div>
 
-      <header className="top-bar">
-        <div className="brand">
-          <Link to="/">Patel Electronics</Link>
-        </div>
-        <nav className="top-actions">
-          <Link to="/products" className="text-button">Products</Link>
-          <Link to="/stores" className="text-button">Stores</Link>
-          <Link to="/cart" className="text-button">Cart</Link>
-          <Link to="/profile" className="text-button">Profile</Link>
-        </nav>
-      </header>
+      <Navbar />
 
       <main className="orders-container">
         <div className="orders-header">
@@ -94,7 +85,7 @@ export default function UserOrders() {
                       </div>
                       <div className="meta-block">
                         <span className="meta-label">TOTAL</span>
-                        <span className="meta-value">${order.total?.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
+                        <span className="meta-value">₹{order.total?.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
                       </div>
                       <div className="meta-block">
                         <span className="meta-label">SHIP TO</span>
@@ -167,7 +158,7 @@ export default function UserOrders() {
                           <Link to={`/product/${item.id}`} className="item-name">{item.name}</Link>
                           <div className="item-sold-by">Sold by: Patel Electronics</div>
                           <div className="item-price">
-                            ${item.price?.toLocaleString()} <span className="item-qty">x {item.quantity}</span>
+                            ₹{item.price?.toLocaleString()} <span className="item-qty">x {item.quantity}</span>
                           </div>
 
                           <div className="item-actions">

@@ -3,6 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from './auth-context.jsx';
 import { useCart } from './cart-context.jsx';
 import { createOrder } from './useFirebaseData';
+import Navbar from './Navbar.jsx';
 
 export default function Checkout() {
   const { isAuthenticated, user } = useAuth();
@@ -78,16 +79,7 @@ export default function Checkout() {
         <div className="blob blob-2"></div>
       </div>
       
-      <header className="top-bar">
-        <div className="brand">
-          <Link to="/">Patel Electronics</Link>
-        </div>
-        <nav className="top-actions">
-          <Link to="/stores" className="text-button">Stores</Link>
-          <Link to="/support" className="text-button">Support</Link>
-          <Link to="/cart" className="text-button">Cart ({getCartItemCount()})</Link>
-        </nav>
-      </header>
+      <Navbar />
 
       <div className="checkout-page-container">
         <div className="checkout-grid">
@@ -139,7 +131,7 @@ export default function Checkout() {
               </div>
 
               <button className="primary submit-order-btn" type="submit" disabled={isSubmitting || cartItems.length === 0}>
-                {isSubmitting ? 'Processing Order...' : `Place Order • $${total.toFixed(2)}`}
+                {isSubmitting ? 'Processing Order...' : `Place Order • ₹${total.toFixed(2)}`}
               </button>
             </form>
           </div>
@@ -156,26 +148,26 @@ export default function Checkout() {
                       <span className="name">{item.name}</span>
                       <span className="qty">Qty: {item.quantity}</span>
                     </div>
-                    <span className="price">${(item.price * item.quantity).toLocaleString()}</span>
+                    <span className="price">₹{(item.price * item.quantity).toLocaleString()}</span>
                   </div>
                 ))}
               </div>
 
               <div className="summary-line">
                 <span>Subtotal</span>
-                <span>${subtotal.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
+                <span>₹{subtotal.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
               </div>
               <div className="summary-line">
                 <span>Shipping</span>
-                <span>${shipping.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
+                <span>₹{shipping.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
               </div>
               <div className="summary-line">
                 <span>Tax</span>
-                <span>${tax.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
+                <span>₹{tax.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
               </div>
               <div className="summary-total">
                 <span>Total</span>
-                <span>${total.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
+                <span>₹{total.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
               </div>
             </div>
           </div>

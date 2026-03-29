@@ -20,6 +20,7 @@ import { AuthProvider, useAuth } from './auth-context.jsx';
 import { AdminAuthProvider } from './admin-auth.jsx';
 import { useCollections, useProducts } from './useFirebaseData';
 import { CartProvider, useCart } from './cart-context.jsx';
+import Navbar from './Navbar.jsx';
 
 const fallbackCollections = [
   {
@@ -49,13 +50,13 @@ const fallbackProducts = [
     id: 'frostline-fridge',
     name: 'Frostline Smart Fridge',
     description: 'Counter-depth cooling with adaptive humidity drawers.',
-    price: 1299,
-    image: 'https://images.unsplash.com/photo-1584243027496-9645097a0054?w=800&h=600&fit=crop',
+    price: 107817,
+    image: '/images/fridge.png',
     images: [
-      'https://images.unsplash.com/photo-1584243027496-9645097a0054?w=800&h=600&fit=crop',
-      'https://images.unsplash.com/photo-1579952361667-8e92354ee5b6?w=800&h=600&fit=crop',
-      'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=800&h=600&fit=crop',
-      'https://images.unsplash.com/photo-1585386959984-a4155224a1ad?w=800&h=600&fit=crop'
+      '/images/fridge.png',
+      '/images/fridge.png',
+      '/images/fridge.png',
+      '/images/fridge.png'
     ],
     category: 'Cold Storage',
     brand: 'Frostline',
@@ -67,12 +68,13 @@ const fallbackProducts = [
     id: 'airstream-ac',
     name: 'Airstream Climate System',
     description: 'Whisper-quiet climate control for modern spaces.',
-    price: 899,
-    image: 'https://images.unsplash.com/photo-1580837119756-563d608dd119?w=800&h=600&fit=crop',
+    price: 74617,
+    image: '/images/ac.png',
     images: [
-      'https://images.unsplash.com/photo-1580837119756-563d608dd119?w=800&h=600&fit=crop',
-      'https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=800&h=600&fit=crop',
-      'https://images.unsplash.com/photo-1584309983854-9f38d4f8f41d?w=800&h=600&fit=crop'
+      '/images/ac.png',
+      '/images/ac.png',
+      '/images/ac.png',
+      '/images/ac.png'
     ],
     category: 'Climate Control',
     brand: 'Airstream',
@@ -84,12 +86,13 @@ const fallbackProducts = [
     id: 'silkguard-washer',
     name: 'Silkguard Washer',
     description: 'Precision fabric care with steam sanitization.',
-    price: 749,
-    image: 'https://images.unsplash.com/photo-1558618047-3c8c76ca7d13?w=800&h=600&fit=crop',
+    price: 62167,
+    image: '/images/washer.png',
     images: [
-      'https://images.unsplash.com/photo-1558618047-3c8c76ca7d13?w=800&h=600&fit=crop',
-      'https://images.unsplash.com/photo-1626999256266-9e70b8e2f5b8?w=800&h=600&fit=crop',
-      'https://images.unsplash.com/photo-1588946413825-3b6a3a9c9f0c?w=800&h=600&fit=crop'
+      '/images/ac.png',
+      '/images/ac.png',
+      '/images/ac.png',
+      '/images/ac.png'
     ],
     category: 'Fabric Care',
     brand: 'Silkguard',
@@ -101,13 +104,13 @@ const fallbackProducts = [
     id: 'cinema-view-oled',
     name: 'CinemaView OLED',
     description: 'Ultra-thin 65" display with cinematic clarity.',
-    price: 1599,
-    image: 'https://images.unsplash.com/photo-1596786350986-224a6375b5fa?w=800&h=600&fit=crop',
+    price: 132717,
+    image: '/images/tv.png',
     images: [
-      'https://images.unsplash.com/photo-1596786350986-224a6375b5fa?w=800&h=600&fit=crop',
-      'https://images.unsplash.com/photo-1612876429769-5c8e8c99c6f2?w=800&h=600&fit=crop',
-      'https://images.unsplash.com/photo-1598322275943-7926d0d5d9e9?w=800&h=600&fit=crop',
-      'https://images.unsplash.com/photo-1606147544762-bf3d0960bc7a?w=800&h=600&fit=crop'
+      '/images/washer.png',
+      '/images/washer.png',
+      '/images/washer.png',
+      '/images/washer.png'
     ],
     category: 'Visual Arts',
     brand: 'CinemaView',
@@ -198,8 +201,8 @@ function AppWithAuth() {
       id: 'frostline-fridge',
       name: 'Frostline Smart Fridge',
       description: 'Counter-depth cooling with adaptive humidity drawers.',
-      price: 899,
-      originalPrice: 1299,
+      price: 74617,
+      originalPrice: 107817,
       conditionRating: 'Good',
       damageDescription: 'Small scratch on the left side panel. Fully functional.',
       warranty: '1 Year Limited Warranty',
@@ -208,14 +211,14 @@ function AppWithAuth() {
       inStock: true,
       rating: 4.5,
       reviews: 128,
-      image: 'https://images.unsplash.com/photo-1584243027496-9645097a0054?w=800&h=600&fit=crop'
+      image: '/images/fridge.png'
     },
     {
       id: 'silkguard-washer',
       name: 'Silkguard Washer',
       description: 'Ultra-quiet drum with steam cleaning for delicate fabrics.',
-      price: 499,
-      originalPrice: 749,
+      price: 41417,
+      originalPrice: 62167,
       conditionRating: 'Fair',
       damageDescription: 'Dent on the front door. Operates normally.',
       warranty: '6 Months Limited Warranty',
@@ -224,14 +227,14 @@ function AppWithAuth() {
       inStock: true,
       rating: 4.7,
       reviews: 89,
-      image: 'https://images.unsplash.com/photo-1558029006-66b89710c3cd?w=800&h=600&fit=crop'
+      image: '/images/washer.png'
     },
     {
       id: 'cinemaview-tv',
       name: 'CinemaView OLED TV',
       description: 'Ultra-thin 65" display with cinematic clarity.',
-      price: 1199,
-      originalPrice: 1599,
+      price: 99517,
+      originalPrice: 132717,
       conditionRating: 'Good',
       damageDescription: 'Minor scuffs on the back casing. Screen is flawless.',
       warranty: '1 Year Limited Warranty',
@@ -240,14 +243,14 @@ function AppWithAuth() {
       inStock: true,
       rating: 4.8,
       reviews: 203,
-      image: 'https://images.unsplash.com/photo-1596786350986-224a6375b5fa?w=800&h=600&fit=crop'
+      image: '/images/tv.png'
     },
     {
       id: 'airpure-pro',
       name: 'AirPure Pro',
       description: 'HEPA filtration with smart air quality monitoring.',
-      price: 499,
-      originalPrice: 699,
+      price: 41417,
+      originalPrice: 58017,
       conditionRating: 'Like New',
       damageDescription: 'Open box return. No visible marks.',
       warranty: '2 Year Manufacturer',
@@ -256,14 +259,14 @@ function AppWithAuth() {
       inStock: true,
       rating: 4.3,
       reviews: 67,
-      image: 'https://images.unsplash.com/photo-1574383404275-24236b5f264a?w=800&h=600&fit=crop'
+      image: '/images/purifier.png'
     },
     {
       id: 'powerstation-elite',
       name: 'PowerStation Elite',
       description: 'Solar-compatible backup with app control.',
-      price: 349,
-      originalPrice: 499,
+      price: 28967,
+      originalPrice: 41417,
       conditionRating: 'Good',
       damageDescription: 'Slight discoloration on top panel.',
       warranty: '1 Year Limited Warranty',
@@ -272,7 +275,7 @@ function AppWithAuth() {
       inStock: true,
       rating: 4.6,
       reviews: 45,
-      image: 'https://images.unsplash.com/photo-1532274402911-5a369e4c4bb5?w=800&h=600&fit=crop'
+      image: '/images/powerstation.png'
     }
   ];
 
@@ -383,24 +386,7 @@ function AppWithAuth() {
           <div className="blob blob-2"></div>
         </div>
 
-        <header className="top-bar">
-          <div className="brand">Patel Electronics</div>
-          <nav className="top-actions">
-            <Link to="/products" className="text-button">Products</Link>
-            <Link to="/stores" className="text-button">Stores</Link>
-            <Link to="/support" className="text-button">Support</Link>
-            <Link to="/cart" className="text-button">Cart ({getCartItemCount()})</Link>
-            {isAuthenticated ? (
-              <>
-                <Link to="/my-orders" className="text-button">My Orders</Link>
-                <Link to="/profile" className="text-button">Profile</Link>
-              </>
-            ) : (
-              <Link to="/login" className="text-button">Sign In</Link>
-            )}
-            <Link to="/admin/login" className="text-button admin-link">Admin</Link>
-          </nav>
-        </header>
+        <Navbar />
 
         <section className="hero">
           <p className="hero-tag">Trusted Electronics Shop · Est. 1998</p>
@@ -487,7 +473,7 @@ function AppWithAuth() {
                     </div>
                   </div>
                   <div className="product-footer">
-                    <span className="price">${product.price.toLocaleString()}</span>
+                    <span className="price">₹{product.price.toLocaleString()}</span>
                     <button className="primary" onClick={(e) => { e.preventDefault(); addToCart(product); }}>Add to Cart</button>
                   </div>
                 </article>
@@ -505,65 +491,59 @@ function AppWithAuth() {
           ))}
         </section>
 
-        <section className="checkout">
-          <div className="checkout-card">
-            <div className="checkout-summary">
-              <h2>Checkout Preview</h2>
-              <p>
-                Prototype payment gateway for demo purposes. Connect a payment provider when you are
-                ready for production.
+        <section className="concierge-newsletter" style={{ padding: '80px 8vw', borderTop: '1px solid var(--border)' }}>
+          <div className="newsletter-wrapper" style={{ 
+            background: 'linear-gradient(145deg, rgba(20,20,25,0.8) 0%, rgba(10,10,12,0.9) 100%)', 
+            border: '1px solid var(--border)',
+            borderRadius: '24px', 
+            padding: '60px 40px', 
+            textAlign: 'center',
+            maxWidth: '900px',
+            margin: '0 auto',
+            boxShadow: '0 20px 40px rgba(0,0,0,0.4)',
+            position: 'relative',
+            overflow: 'hidden'
+          }}>
+            <div style={{ position: 'relative', zIndex: 2 }}>
+              <p className="eyebrow" style={{ color: 'var(--accent)', marginBottom: '16px', fontWeight: '700', letterSpacing: '0.2em', textTransform: 'uppercase' }}>
+                Join Patel Concierge
               </p>
-              <div className="summary-line">
-                <span>Subtotal</span>
-                <span>${subtotal.toFixed(2)}</span>
-              </div>
-              <div className="summary-line">
-                <span>Delivery</span>
-                <span>${shipping.toFixed(2)}</span>
-              </div>
-              <div className="summary-line">
-                <span>Tax</span>
-                <span>${tax.toFixed(2)}</span>
-              </div>
-              <div className="summary-total">
-                <span>Total</span>
-                <span>${total.toFixed(2)}</span>
-              </div>
+              <h2 style={{ fontSize: 'clamp(2rem, 4vw, 3rem)', fontWeight: '800', marginBottom: '24px', fontFamily: '"Outfit", sans-serif', color: 'var(--text-main)' }}>
+                Elevate your smart home.
+              </h2>
+              <p style={{ color: 'var(--text-muted)', fontSize: '1.1rem', maxWidth: '600px', margin: '0 auto 40px', lineHeight: '1.6' }}>
+                Subscribe to our inner circle for priority access to limited-edition appliances, private sale events, and complimentary smart home consultations.
+              </p>
+              
+              <form onSubmit={(e) => { e.preventDefault(); alert('Welcome to the inner circle!'); }} style={{ display: 'flex', gap: '16px', maxWidth: '500px', margin: '0 auto', flexWrap: 'wrap', justifyContent: 'center' }}>
+                <input 
+                  type="email" 
+                  placeholder="Enter your preferred email" 
+                  required 
+                  style={{ 
+                    flex: '1 1 250px', 
+                    padding: '16px 24px', 
+                    borderRadius: '8px', 
+                    background: 'rgba(255,255,255,0.05)', 
+                    border: '1px solid rgba(255,255,255,0.1)', 
+                    color: 'var(--text-main)', 
+                    fontFamily: '"Outfit", sans-serif',
+                    fontSize: '1rem',
+                    outline: 'none',
+                    transition: 'border 0.3s ease'
+                  }} 
+                  onFocus={(e) => e.target.style.borderColor = 'var(--accent)'}
+                  onBlur={(e) => e.target.style.borderColor = 'rgba(255,255,255,0.1)'}
+                />
+                <button type="submit" className="primary" style={{ whiteSpace: 'nowrap', padding: '16px 36px' }}>
+                  Subscribe Access
+                </button>
+              </form>
             </div>
-            <form className="payment-form" onSubmit={handleCheckout}>
-              <h3>Payment Gateway (Prototype)</h3>
-              <label>
-                Cardholder Name
-                <input type="text" placeholder="Asha Patel" required />
-              </label>
-              <label>
-                Card Number
-                <input type="text" placeholder="4242 4242 4242 4242" required />
-              </label>
-              <div className="payment-row">
-                <label>
-                  Expiry
-                  <input type="text" placeholder="08/28" required />
-                </label>
-                <label>
-                  CVC
-                  <input type="text" placeholder="123" required />
-                </label>
-              </div>
-              <label>
-                Billing Email
-                <input type="email" placeholder="hello@patelelectronics.com" required />
-              </label>
-              <button className="primary" type="submit">
-                {checkoutStatus === 'processing' ? 'Processing...' : 'Complete Purchase'}
-              </button>
-              {checkoutStatus === 'success' && (
-                <p className="status success">Payment authorized (prototype).</p>
-              )}
-              {checkoutStatus === 'error' && (
-                <p className="status error">Payment failed. Please try again.</p>
-              )}
-            </form>
+            
+            {/* Background decorative glows */}
+            <div style={{ position: 'absolute', top: '-50%', left: '-20%', width: '500px', height: '500px', background: 'radial-gradient(circle, var(--accent) 0%, transparent 70%)', opacity: '0.15', filter: 'blur(50px)', zIndex: 1, pointerEvents: 'none' }}></div>
+            <div style={{ position: 'absolute', bottom: '-50%', right: '-20%', width: '500px', height: '500px', background: 'radial-gradient(circle, var(--accent-secondary) 0%, transparent 70%)', opacity: '0.15', filter: 'blur(50px)', zIndex: 1, pointerEvents: 'none' }}></div>
           </div>
         </section>
 

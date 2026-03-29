@@ -41,19 +41,13 @@ export const AdminAuthProvider = ({ children }) => {
       // Simulate admin authentication (in production, this would call your backend)
       await new Promise(resolve => setTimeout(resolve, 1000));
       
-      // Demo admin credentials
-      const adminCredentials = {
-        email: 'admin@patelelectronics.com',
-        password: 'admin123'
-      };
-      
-      if (email === adminCredentials.email && password === adminCredentials.password) {
+      if (email === 'admin@patelelectronics.com' && password === 'admin123') {
         const adminData = {
           id: 'admin_001',
           email: email,
           name: 'Admin User',
           role: 'admin',
-          permissions: ['read', 'write', 'delete', 'manage_sales', 'manage_products', 'view_analytics'],
+          permissions: ['read', 'write', 'delete', 'manage_sales', 'manage_products', 'view_analytics', 'manage_customers'],
           lastLogin: new Date().toISOString()
         };
         
@@ -61,7 +55,22 @@ export const AdminAuthProvider = ({ children }) => {
         setIsAuthenticated(true);
         localStorage.setItem('patelElectronicsAdmin', JSON.stringify(adminData));
         
-        return { success: true };
+        return { success: true, role: adminData.role };
+      } else if (email === 'sales@patelelectronics.com' && password === 'sales123') {
+        const adminData = {
+          id: 'sales_001',
+          email: email,
+          name: 'Sales Agent',
+          role: 'sales',
+          permissions: ['read', 'manage_sales', 'view_customers'],
+          lastLogin: new Date().toISOString()
+        };
+        
+        setAdmin(adminData);
+        setIsAuthenticated(true);
+        localStorage.setItem('patelElectronicsAdmin', JSON.stringify(adminData));
+        
+        return { success: true, role: adminData.role };
       } else {
         throw new Error('Invalid admin credentials');
       }

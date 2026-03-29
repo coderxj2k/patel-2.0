@@ -77,8 +77,8 @@ export default function ProductManagement() {
           id: 'frostline-fridge',
           name: 'Frostline Smart Fridge',
           description: 'Counter-depth cooling with adaptive humidity drawers.',
-          price: 899,
-          originalPrice: 1299,
+          price: 74617,
+          originalPrice: 107817,
           conditionRating: 'Good',
           damageDescription: 'Small scratch on the left side panel. Fully functional.',
           warranty: '1 Year Limited Warranty',
@@ -87,14 +87,14 @@ export default function ProductManagement() {
           inStock: true,
           rating: 4.5,
           reviews: 128,
-          image: 'https://images.unsplash.com/photo-1584243027496-9645097a0054?w=800&h=600&fit=crop'
+          image: '/images/fridge.png'
         },
         {
           id: 'silkguard-washer',
           name: 'Silkguard Washer',
           description: 'Ultra-quiet drum with steam cleaning for delicate fabrics.',
-          price: 499,
-          originalPrice: 749,
+          price: 41417,
+          originalPrice: 62167,
           conditionRating: 'Fair',
           damageDescription: 'Dent on the front door. Operates normally.',
           warranty: '6 Months Limited Warranty',
@@ -103,14 +103,14 @@ export default function ProductManagement() {
           inStock: true,
           rating: 4.7,
           reviews: 89,
-          image: 'https://images.unsplash.com/photo-1558029006-66b89710c3cd?w=800&h=600&fit=crop'
+          image: '/images/washer.png'
         },
         {
           id: 'cinemaview-tv',
           name: 'CinemaView OLED TV',
           description: 'Ultra-thin 65" display with cinematic clarity.',
-          price: 1199,
-          originalPrice: 1599,
+          price: 99517,
+          originalPrice: 132717,
           conditionRating: 'Good',
           damageDescription: 'Minor scuffs on the back casing. Screen is flawless.',
           warranty: '1 Year Limited Warranty',
@@ -119,14 +119,14 @@ export default function ProductManagement() {
           inStock: true,
           rating: 4.8,
           reviews: 203,
-          image: 'https://images.unsplash.com/photo-1596786350986-224a6375b5fa?w=800&h=600&fit=crop'
+          image: '/images/tv.png'
         },
         {
           id: 'airpure-pro',
           name: 'AirPure Pro',
           description: 'HEPA filtration with smart air quality monitoring.',
-          price: 499,
-          originalPrice: 699,
+          price: 41417,
+          originalPrice: 58017,
           conditionRating: 'Like New',
           damageDescription: 'Open box return. No visible marks.',
           warranty: '2 Year Manufacturer',
@@ -135,14 +135,14 @@ export default function ProductManagement() {
           inStock: true,
           rating: 4.3,
           reviews: 67,
-          image: 'https://images.unsplash.com/photo-1574383404275-24236b5f264a?w=800&h=600&fit=crop'
+          image: '/images/purifier.png'
         },
         {
           id: 'powerstation-elite',
           name: 'PowerStation Elite',
           description: 'Solar-compatible backup with app control.',
-          price: 349,
-          originalPrice: 499,
+          price: 28967,
+          originalPrice: 41417,
           conditionRating: 'Good',
           damageDescription: 'Slight discoloration on top panel.',
           warranty: '1 Year Limited Warranty',
@@ -151,7 +151,7 @@ export default function ProductManagement() {
           inStock: true,
           rating: 4.6,
           reviews: 45,
-          image: 'https://images.unsplash.com/photo-1532274402911-5a369e4c4bb5?w=800&h=600&fit=crop'
+          image: '/images/powerstation.png'
         }
       ];
       setProducts(defaultProducts);
@@ -372,7 +372,7 @@ export default function ProductManagement() {
             <span>📊</span>
           </div>
           <div className="pm-stat-content">
-            <h3>${products.length > 0 ? Math.round(products.reduce((sum, p) => sum + p.price, 0) / products.length) : 0}</h3>
+            <h3>₹{products.length > 0 ? Math.round(products.reduce((sum, p) => sum + p.price, 0) / products.length) : 0}</h3>
             <p>Avg Price</p>
           </div>
         </div>
@@ -468,10 +468,10 @@ export default function ProductManagement() {
                     <td>{product.brand}</td>
                     <td>
                       <div style={{ display: 'flex', flexDirection: 'column' }}>
-                        <span className="pm-price">${product.price}</span>
+                        <span className="pm-price">₹{product.price}</span>
                         {product.originalPrice && (
                           <span style={{ fontSize: '0.75rem', textDecoration: 'line-through', color: '#9ca3af' }}>
-                            ${product.originalPrice}
+                            ₹{product.originalPrice}
                           </span>
                         )}
                       </div>
@@ -527,7 +527,7 @@ export default function ProductManagement() {
                     {renderStars(product.rating)}
                   </div>
                   <div className="pm-card-footer">
-                    <span className="pm-card-price">${product.price}</span>
+                    <span className="pm-card-price">₹{product.price}</span>
                     <div className="pm-card-actions">
                       <button 
                         className="pm-card-btn pm-edit-btn"
@@ -577,7 +577,7 @@ export default function ProductManagement() {
                 </div>
 
                 <div className="pm-form-group">
-                  <label>Price ($) *</label>
+                  <label>Price (₹) *</label>
                   <input
                     type="number"
                     name="price"
@@ -591,7 +591,7 @@ export default function ProductManagement() {
                 </div>
 
                 <div className="pm-form-group">
-                  <label>Original Price ($) *</label>
+                  <label>Original Price (₹) *</label>
                   <input
                     type="number"
                     name="originalPrice"

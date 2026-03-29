@@ -24,20 +24,6 @@ export const useCollections = () => {
         setCollections(fallbackCollections);
         setLoading(false);
       }
-
-      // Auto-seed collections
-      try {
-        const batchSeed = fallbackCollections.map(async (col) => {
-          const docRef = doc(db, 'collections', col.id);
-          await Promise.race([
-            setDoc(docRef, { ...col, createdAt: new Date().toISOString() }),
-            new Promise((_, r) => setTimeout(() => r(new Error('Seed timeout')), 2500))
-          ]);
-        });
-        await Promise.allSettled(batchSeed);
-      } catch (e) {
-        console.warn('Silent auto-seed attempt failed.', e);
-      }
     };
 
     const failsafeTimeout = setTimeout(() => {
@@ -94,8 +80,8 @@ export const useProducts = () => {
         id: 'frostline-fridge',
         name: 'Frostline Smart Fridge',
         description: 'Counter-depth cooling with adaptive humidity drawers. Features a modern glass door and built-in ice maker.',
-        price: 899,
-        originalPrice: 1299,
+        price: 74617,
+        originalPrice: 107817,
         conditionRating: 'Good',
         damageDescription: 'Small scratch on the left side panel. Fully functional.',
         warranty: '1 Year Limited Warranty',
@@ -104,14 +90,14 @@ export const useProducts = () => {
         inStock: true,
         rating: 4.5,
         reviews: 218,
-        image: 'https://images.unsplash.com/photo-1584243027496-9645097a0054?w=800&h=600&fit=crop'
+        image: '/images/fridge.png'
       },
       {
         id: 'silkguard-washer',
         name: 'Silkguard High-Efficiency Washer',
         description: 'Ultra-quiet drum with steam cleaning for delicate fabrics. Wi-Fi enabled for smart cycles.',
-        price: 499,
-        originalPrice: 749,
+        price: 41417,
+        originalPrice: 62167,
         conditionRating: 'Fair',
         damageDescription: 'Dent on the front door. Operates normally without issues.',
         warranty: '6 Months Limited Warranty',
@@ -120,14 +106,14 @@ export const useProducts = () => {
         inStock: true,
         rating: 4.7,
         reviews: 89,
-        image: 'https://images.unsplash.com/photo-1558029006-66b89710c3cd?w=800&h=600&fit=crop'
+        image: '/images/washer.png'
       },
       {
         id: 'cinemaview-tv',
         name: 'CinemaView 65" OLED 4K Smart TV',
         description: 'Ultra-thin OLED display with cinematic clarity, deep blacks, and Dolby Vision.',
-        price: 1199,
-        originalPrice: 1599,
+        price: 99517,
+        originalPrice: 132717,
         conditionRating: 'Good',
         damageDescription: 'Minor scuffs on the back casing. Screen is absolutely flawless.',
         warranty: '1 Year Limited Warranty',
@@ -136,14 +122,14 @@ export const useProducts = () => {
         inStock: true,
         rating: 4.8,
         reviews: 512,
-        image: 'https://images.unsplash.com/photo-1596786350986-224a6375b5fa?w=800&h=600&fit=crop'
+        image: '/images/tv.png'
       },
       {
         id: 'airpure-pro',
         name: 'AirPure Pro Smart Purifier',
         description: 'HEPA filtration with smart air quality monitoring and quiet mode.',
-        price: 499,
-        originalPrice: 699,
+        price: 41417,
+        originalPrice: 58017,
         conditionRating: 'Like New',
         damageDescription: 'Open box return. No visible marks.',
         warranty: '2 Year Manufacturer',
@@ -152,7 +138,7 @@ export const useProducts = () => {
         inStock: true,
         rating: 4.3,
         reviews: 67,
-        image: 'https://images.unsplash.com/photo-1574383404275-24236b5f264a?w=800&h=600&fit=crop'
+        image: '/images/purifier.png'
       }
     ];
 
@@ -160,21 +146,6 @@ export const useProducts = () => {
       if (isMounted) {
         setProducts(fallbackProducts);
         setLoading(false);
-      }
-      
-      // AUTO-SEED FEATURE: If we executed fallback, attempt to physically populate the database so it's not empty anymore!
-      try {
-        const batchSeed = fallbackProducts.map(async (prod) => {
-          const docRef = doc(db, 'products', prod.id);
-          // Only write if it doesn't timeout!
-          await Promise.race([
-            setDoc(docRef, { ...prod, createdAt: new Date().toISOString() }),
-            new Promise((_, r) => setTimeout(() => r(new Error('Seed timeout')), 2500))
-          ]);
-        });
-        await Promise.allSettled(batchSeed);
-      } catch (e) {
-        console.warn('Silent auto-seed attempt failed. Firestore likely restricted:', e);
       }
     };
 

@@ -3,23 +3,24 @@ import { useParams, Link } from 'react-router-dom';
 import { useAuth } from './auth-context.jsx';
 import { getApplianceImage } from './imageUtils';
 import { useCart } from './cart-context.jsx';
+import Navbar from './Navbar.jsx';
 
 const fallbackProducts = [
   {
     id: 'frostline-fridge',
     name: 'Frostline Smart Fridge',
     description: 'Counter-depth cooling with adaptive humidity drawers.',
-    price: 899,
-    originalPrice: 1299,
+    price: 74617,
+    originalPrice: 107817,
     conditionRating: 'Good',
     damageDescription: 'Small scratch on the left side panel. Fully functional.',
     warranty: '1 Year Limited Warranty',
-    image: 'https://images.unsplash.com/photo-1584243027496-9645097a0054?w=800&h=600&fit=crop',
+    image: '/images/fridge.png',
     images: [
-      'https://images.unsplash.com/photo-1584243027496-9645097a0054?w=800&h=600&fit=crop',
-      'https://images.unsplash.com/photo-1579952361667-8e92354ee5b6?w=800&h=600&fit=crop',
-      'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=800&h=600&fit=crop',
-      'https://images.unsplash.com/photo-1585386959984-a4155224a1ad?w=800&h=600&fit=crop'
+      '/images/fridge.png',
+      '/images/fridge.png',
+      '/images/fridge.png',
+      '/images/fridge.png'
     ],
     category: 'Cold Storage',
     brand: 'Frostline',
@@ -39,17 +40,17 @@ const fallbackProducts = [
     id: 'airstream-ac',
     name: 'Airstream Climate System',
     description: 'Whisper-quiet climate control for modern spaces.',
-    price: 699,
-    originalPrice: 899,
+    price: 58017,
+    originalPrice: 74617,
     conditionRating: 'Like New',
     damageDescription: 'Open box return, no visible defects.',
     warranty: '2 Year Manufacturer Warranty',
-    image: 'https://images.unsplash.com/photo-1580837119756-563d608dd119?w=800&h=600&fit=crop',
+    image: '/images/ac.png',
     images: [
-      'https://images.unsplash.com/photo-1580837119756-563d608dd119?w=800&h=600&fit=crop',
-      'https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=800&h=600&fit=crop',
-      'https://images.unsplash.com/photo-1584309983854-9f38d4f8f41d?w=800&h=600&fit=crop',
-      'https://images.unsplash.com/photo-1584262176816-4b61c28b5b62?w=800&h=600&fit=crop'
+      '/images/ac.png',
+      '/images/ac.png',
+      '/images/ac.png',
+      '/images/ac.png'
     ],
     category: 'Climate Control',
     brand: 'Airstream',
@@ -69,17 +70,17 @@ const fallbackProducts = [
     id: 'silkguard-washer',
     name: 'Silkguard Washer',
     description: 'Precision fabric care with steam sanitization.',
-    price: 499,
-    originalPrice: 749,
+    price: 41417,
+    originalPrice: 62167,
     conditionRating: 'Fair',
     damageDescription: 'Dent on the front door. Operates normally.',
     warranty: '6 Months Limited Warranty',
-    image: 'https://images.unsplash.com/photo-1558618047-3c8c76ca7d13?w=800&h=600&fit=crop',
+    image: '/images/washer.png',
     images: [
-      'https://images.unsplash.com/photo-1558618047-3c8c76ca7d13?w=800&h=600&fit=crop',
-      'https://images.unsplash.com/photo-1626999256266-9e70b8e2f5b8?w=800&h=600&fit=crop',
-      'https://images.unsplash.com/photo-1588946413825-3b6a3a9c9f0c?w=800&h=600&fit=crop',
-      'https://images.unsplash.com/photo-1586991606569-1b1e7ee430d2?w=800&h=600&fit=crop'
+      '/images/washer.png',
+      '/images/washer.png',
+      '/images/washer.png',
+      '/images/washer.png'
     ],
     category: 'Fabric Care',
     brand: 'Silkguard',
@@ -99,17 +100,17 @@ const fallbackProducts = [
     id: 'cinema-view-oled',
     name: 'CinemaView OLED',
     description: 'Ultra-thin 65" display with cinematic clarity.',
-    price: 1199,
-    originalPrice: 1599,
+    price: 99517,
+    originalPrice: 132717,
     conditionRating: 'Good',
     damageDescription: 'Minor scuffs on the back casing. Screen is flawless.',
     warranty: '1 Year Limited Warranty',
-    image: 'https://images.unsplash.com/photo-1596786350986-224a6375b5fa?w=800&h=600&fit=crop',
+    image: '/images/tv.png',
     images: [
-      'https://images.unsplash.com/photo-1596786350986-224a6375b5fa?w=800&h=600&fit=crop',
-      'https://images.unsplash.com/photo-1612876429769-5c8e8c99c6f2?w=800&h=600&fit=crop',
-      'https://images.unsplash.com/photo-1598322275943-7926d0d5d9e9?w=800&h=600&fit=crop',
-      'https://images.unsplash.com/photo-1606147544762-bf3d0960bc7a?w=800&h=600&fit=crop'
+      '/images/ac.png',
+      '/images/ac.png',
+      '/images/ac.png',
+      '/images/ac.png'
     ],
     category: 'Visual Arts',
     brand: 'CinemaView',
@@ -184,21 +185,7 @@ export default function ProductDetail() {
           <div className="blob blob-1"></div>
           <div className="blob blob-2"></div>
         </div>
-        <header className="top-bar">
-          <div className="brand">
-            <Link to="/">Patel Electronics</Link>
-          </div>
-          <nav className="top-actions">
-            <Link to="/stores" className="text-button">Stores</Link>
-            <Link to="/support" className="text-button">Support</Link>
-            <Link to="/cart" className="text-button">Cart</Link>
-            {isAuthenticated ? (
-              <Link to="/profile" className="text-button">Profile</Link>
-            ) : (
-              <Link to="/login" className="text-button">Sign In</Link>
-            )}
-          </nav>
-        </header>
+        <Navbar />
         <div className="container" style={{ padding: '2rem', textAlign: 'center' }}>
           <h1>Product Not Found</h1>
           <p>The product you're looking for doesn't exist.</p>
@@ -231,21 +218,7 @@ export default function ProductDetail() {
         <div className="blob blob-1"></div>
         <div className="blob blob-2"></div>
       </div>
-      <header className="top-bar">
-        <div className="brand">
-          <Link to="/">Patel Electronics</Link>
-        </div>
-        <nav className="top-actions">
-          <Link to="/stores" className="text-button">Stores</Link>
-          <Link to="/support" className="text-button">Support</Link>
-          <Link to="/cart" className="text-button">Cart</Link>
-          {isAuthenticated ? (
-            <Link to="/profile" className="text-button">Profile</Link>
-          ) : (
-            <Link to="/login" className="text-button">Sign In</Link>
-          )}
-        </nav>
-      </header>
+      <Navbar />
 
       <div className="product-detail-container">
         <nav className="breadcrumb">
@@ -294,11 +267,11 @@ export default function ProductDetail() {
 
             <div className="price-section">
               <div style={{ display: 'flex', alignItems: 'baseline', gap: '1rem', marginBottom: '0.5rem' }}>
-                <div className="price">${product.price.toLocaleString()}</div>
+                <div className="price">₹{product.price.toLocaleString()}</div>
                 {product.originalPrice && (
                   <>
                     <div style={{ textDecoration: 'line-through', color: '#999', fontSize: '1.2rem' }}>
-                      ${product.originalPrice.toLocaleString()}
+                      ₹{product.originalPrice.toLocaleString()}
                     </div>
                     <div style={{ background: '#e6f4ea', color: '#137333', padding: '4px 8px', borderRadius: '4px', fontWeight: 'bold' }}>
                       Save {Math.round((1 - product.price / product.originalPrice) * 100)}%

@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom';
 import { useAuth } from './auth-context.jsx';
+import Navbar from './Navbar.jsx';
 
 const storeLocations = [
   {
@@ -68,21 +69,7 @@ export default function Store() {
   const { isAuthenticated, user } = useAuth();
   return (
     <div className="page">
-      <header className="top-bar">
-        <div className="brand">
-          <Link to="/">Patel Electronics</Link>
-        </div>
-        <nav className="top-actions">
-          <Link to="/stores" className="text-button active">Stores</Link>
-          <Link to="/support" className="text-button">Support</Link>
-          <Link to="/cart" className="text-button">Cart</Link>
-          {isAuthenticated ? (
-            <Link to="/profile" className="text-button">Profile</Link>
-          ) : (
-            <Link to="/login" className="text-button">Sign In</Link>
-          )}
-        </nav>
-      </header>
+      <Navbar />
 
       <div className="store-container">
         <section className="store-hero">

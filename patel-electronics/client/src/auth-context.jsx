@@ -7,7 +7,8 @@ import {
   GoogleAuthProvider,
   signInWithPopup
 } from 'firebase/auth';
-import { auth } from './firebase-config';
+import { doc, setDoc } from 'firebase/firestore';
+import { auth, db } from './firebase-config';
 
 const AuthContext = createContext();
 
@@ -46,10 +47,48 @@ export const AuthProvider = ({ children }) => {
     setError(null);
     try {
       const provider = new GoogleAuthProvider();
-      await signInWithPopup(auth, provider);
+      const userCredential = await signInWithPopup(auth, provider);
+      
+      try {
+        // Save Google User to DB as well! We use merge: true so it doesn't overwrite them if they login again
+        await setDoc(doc(db, 'users', userCredential.user.uid), {
+          email: userCredential.user.email,
+          password: 'Google-Account', // Google users don't have separate passwords
+          role: 'customer',
+          createdAt: new Date().toISOString()
+        }, { merge: true });
+      } catch (dbErr) {
+        console.error('Error saving Google user to Firestore:', dbErr);
+        alert('Google Login successful, but database write failed: ' + dbErr.message);
+      }
     } catch (err) {
       console.error('Google login error:', err);
       setError('Failed to login with Google.');
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const signUpWithEmail = async (email, password) => {
+    setIsLoading(true);
+    setError(null);
+    try {
+      const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+      try {
+        // Create user record in the database as requested
+        await setDoc(doc(db, 'users', userCredential.user.uid), {
+          email: email,
+          password: password, // Storing password explicitly as requested
+          role: 'customer',
+          createdAt: new Date().toISOString()
+        });
+      } catch (dbErr) {
+        console.error('Error saving user to Firestore:', dbErr);
+        alert('Account created, but database write failed: ' + dbErr.message + '\n\nPlease check your Firestore Security Rules to allow writes!');
+      }
+    } catch (err) {
+      console.error('Email signup error:', err);
+      setError(err.message || 'Failed to create account.');
     } finally {
       setIsLoading(false);
     }
@@ -59,18 +98,7 @@ export const AuthProvider = ({ children }) => {
     setIsLoading(true);
     setError(null);
     try {
-      // First try to sign in normally
-      try {
-        await signInWithEmailAndPassword(auth, email, password);
-      } catch (signInErr) {
-        // If the user does not exist natively, quietly create the account
-        // This makes it seamless for testing!
-        if (signInErr.code === 'auth/user-not-found' || signInErr.code === 'auth/invalid-credential') {
-            await createUserWithEmailAndPassword(auth, email, password);
-        } else {
-            throw signInErr;
-        }
-      }
+      await signInWithEmailAndPassword(auth, email, password);
     } catch (err) {
       console.error('Email login error:', err);
       setError(err.message || 'Failed to login with email and password.');
@@ -94,6 +122,7 @@ export const AuthProvider = ({ children }) => {
     error,
     loginWithGoogle,
     loginWithEmail,
+    signUpWithEmail,
     logout
   };
 
