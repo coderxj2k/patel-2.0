@@ -9,7 +9,6 @@ import OrderConfirmation from './OrderConfirmation';
 import UserOrders from './UserOrders';
 import Login from './Login';
 import Profile from './Profile';
-import AdminLogin from './AdminLogin';
 import AdminDashboard from './AdminDashboard';
 import ProductManagement from './ProductManagement';
 import ProductsPage from './ProductsPage';
@@ -285,40 +284,7 @@ function AppWithAuth() {
 
   // Cart logic has been moved to CartContext
 
-  useEffect(() => {
-    const controller = new AbortController();
-    const loadData = async () => {
-      try {
-        const [collectionsResponse, productsResponse] = await Promise.all([
-          fetch('http://localhost:8080/api/collections', {
-            signal: controller.signal
-          }),
-          fetch('http://localhost:8080/api/products', {
-            signal: controller.signal
-          })
-        ]);
-        if (collectionsResponse.ok) {
-          const data = await collectionsResponse.json();
-          if (Array.isArray(data)) {
-            setCollections(data);
-          }
-        }
-        if (productsResponse.ok) {
-          const data = await productsResponse.json();
-          if (Array.isArray(data)) {
-            setProducts(data);
-          }
-        }
-      } catch (error) {
-        if (error.name !== 'AbortError') {
-          console.warn('Using fallback data.');
-        }
-      }
-    };
 
-    loadData();
-    return () => controller.abort();
-  }, []);
 
   // Totals are now fetched natively from CartContext
 
@@ -368,7 +334,6 @@ function AppWithAuth() {
         <Route path="/my-orders" element={<UserOrders />} />
         <Route path="/login" element={<Login />} />
         <Route path="/profile" element={<Profile />} />
-        <Route path="/admin/login" element={<AdminThemeWrapper><AdminLogin /></AdminThemeWrapper>} />
         <Route path="/admin/dashboard" element={<AdminThemeWrapper><AdminDashboard /></AdminThemeWrapper>} />
         <Route path="/admin/products" element={<AdminThemeWrapper><ProductManagement /></AdminThemeWrapper>} />
         <Route path="/admin/orders" element={<AdminThemeWrapper><AdminOrders /></AdminThemeWrapper>} />

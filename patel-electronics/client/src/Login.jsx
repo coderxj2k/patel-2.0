@@ -1,10 +1,13 @@
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from './auth-context.jsx';
+import { useAdminAuth } from './admin-auth.jsx';
 import Navbar from './Navbar.jsx';
 
 export default function Login() {
   const { loginWithGoogle, loginWithEmail, signUpWithEmail, isLoading, error } = useAuth();
+  const { loginAsAdmin } = useAdminAuth();
+  const navigate = useNavigate();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [isLoginMode, setIsLoginMode] = useState(true);
@@ -16,10 +19,26 @@ export default function Login() {
   const handleEmailAuth = async (e) => {
     e.preventDefault();
     if (email && password) {
+      // Intercept admin and sales credentials and route directly to their dashboards
+      if (email === 'admin@patelelectronics.com' || email === 'sales@patelelectronics.com') {
+        const result = await loginAsAdmin(email, password);
+        if (result && result.success) {
+          if (result.role === 'sales') {
+            navigate('/admin/orders');
+          } else {
+            navigate('/admin/dashboard');
+          }
+          return;
+        }
+      }
+
+      // Normal customer authentication fallback
       if (isLoginMode) {
         await loginWithEmail(email, password);
+        navigate('/'); // Redirect regular customers to Storefront
       } else {
         await signUpWithEmail(email, password);
+        navigate('/'); // Redirect regular customers to Storefront
       }
     }
   };
@@ -33,8 +52,8 @@ export default function Login() {
           <div className="auth-header">
             <h1>{isLoginMode ? 'Welcome Back' : 'Create Account'}</h1>
             <p>
-              {isLoginMode 
-                ? 'Sign in to access your account and continue shopping' 
+              {isLoginMode
+                ? 'Sign in to access your account and continue shopping'
                 : 'Join Patel Electronics for exclusive deals and personalized service'
               }
             </p>
@@ -42,7 +61,7 @@ export default function Login() {
 
           {error && (
             <div className="auth-error">
-              <p>Authentication error: {error.message}</p>
+              <p>Authentication error: {error}</p>
             </div>
           )}
 
@@ -52,7 +71,7 @@ export default function Login() {
             </div>
 
             <div className="auth-buttons">
-              <button 
+              <button
                 className="auth-button primary google"
                 onClick={handleGoogleLogin}
                 disabled={isLoading}
@@ -109,8 +128,8 @@ export default function Login() {
             <div className="auth-switch">
               <p>
                 {isLoginMode ? "Don't have an account?" : "Already have an account?"}
-                <button 
-                  type="button" 
+                <button
+                  type="button"
                   className="switch-button"
                   onClick={() => setIsLoginMode(!isLoginMode)}
                 >

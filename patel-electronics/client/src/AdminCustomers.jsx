@@ -8,7 +8,7 @@ export default function AdminCustomers() {
 
   useEffect(() => {
     if (!admin) {
-      navigate('/admin/login');
+      navigate('/');
     }
   }, [admin, navigate]);
 
@@ -49,7 +49,7 @@ export default function AdminCustomers() {
             </span>
             <button 
               className="pm-nav-logout"
-              onClick={() => navigate('/admin/login')}
+              onClick={() => navigate('/')}
             >
               <span className="pm-nav-icon">🚪</span>
               Logout
@@ -99,6 +99,13 @@ export default function AdminCustomers() {
         .pm-card { background: white; border-radius: 0.75rem; overflow: hidden; box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1); }
         .pm-card-content { padding: 1.5rem; }
         .pm-main-content { padding: 0 2rem 2rem; max-width: 1400px; margin: 0 auto; }
+        
+        @media (max-width: 768px) {
+          .pm-nav, .pm-header, .pm-main-content { padding: 1rem; }
+          .pm-nav-content { flex-direction: column; gap: 1rem; align-items: stretch; }
+          .pm-nav-menu { flex-wrap: wrap; justify-content: center; }
+          .pm-nav-user { justify-content: space-between; width: 100%; border-top: 1px solid #e5e7eb; padding-top: 1rem; }
+        }
       `}</style>
     </div>
   );

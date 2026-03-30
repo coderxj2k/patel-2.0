@@ -87,8 +87,11 @@ export const AuthProvider = ({ children }) => {
         alert('Account created, but database write failed: ' + dbErr.message + '\n\nPlease check your Firestore Security Rules to allow writes!');
       }
     } catch (err) {
-      console.error('Email signup error:', err);
-      setError(err.message || 'Failed to create account.');
+      if (err.code === 'auth/email-already-in-use') {
+        setError('This email is already registered. Please sign in instead.');
+      } else {
+        setError('Invalid email or password.');
+      }
     } finally {
       setIsLoading(false);
     }
@@ -100,8 +103,7 @@ export const AuthProvider = ({ children }) => {
     try {
       await signInWithEmailAndPassword(auth, email, password);
     } catch (err) {
-      console.error('Email login error:', err);
-      setError(err.message || 'Failed to login with email and password.');
+      setError('Invalid email or password.');
     } finally {
       setIsLoading(false);
     }

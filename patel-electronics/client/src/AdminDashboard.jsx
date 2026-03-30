@@ -1,32 +1,23 @@
 import { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAdminAuth } from './admin-auth';
+import { useProducts } from './useFirebaseData';
 
 export default function AdminDashboard() {
   const { admin, logout, hasPermission } = useAdminAuth();
   const navigate = useNavigate();
+  const { products } = useProducts();
   const [activeTab, setActiveTab] = useState('overview');
   const [salesData, setSalesData] = useState([]);
   const [orders, setOrders] = useState([]);
   const [customers, setCustomers] = useState([]);
-  const [products, setProducts] = useState([]);
   const [showPermissionModal, setShowPermissionModal] = useState(false);
 
-  const handleProductsClick = (e) => {
-    if (admin?.role !== 'admin') {
-      e.preventDefault();
-      setShowPermissionModal(true);
-    } else {
-      // Allow navigation or manual navigate
-      if (!e.target.href) {
-        navigate('/admin/products');
-      }
-    }
-  };
+
 
   useEffect(() => {
     if (!admin) {
-      navigate('/admin/login');
+      navigate('/');
       return;
     }
 
@@ -60,19 +51,9 @@ export default function AdminDashboard() {
       { id: 4, name: 'Sarah Williams', email: 'sarah@example.com', orders: 4, totalSpent: 232068 }
     ];
 
-    // Demo products
-    const demoProducts = [
-      { id: 1, name: 'Frostline Smart Fridge', category: 'Cold Storage', stock: 15, price: 107817 },
-      { id: 2, name: 'Silkguard Washer', category: 'Fabric Care', stock: 8, price: 74617 },
-      { id: 3, name: 'CinemaView OLED TV', category: 'Entertainment', stock: 3, price: 132717 },
-      { id: 4, name: 'AirPure Pro', category: 'Air Care', stock: 12, price: 58017 },
-      { id: 5, name: 'PowerStation Elite', category: 'Small Appliances', stock: 20, price: 41417 }
-    ];
-
     setSalesData(demoSales);
     setOrders(demoOrders);
     setCustomers(demoCustomers);
-    setProducts(demoProducts);
   };
 
   const getStatusColor = (status) => {
@@ -108,7 +89,7 @@ export default function AdminDashboard() {
           </div>
           
           <div className="pm-nav-menu">
-            <Link to="/admin/products" className="pm-nav-link" onClick={handleProductsClick}>
+            <Link to="/admin/products" className="pm-nav-link">
               <span className="pm-nav-icon">📦</span>
               Products
             </Link>
@@ -133,7 +114,7 @@ export default function AdminDashboard() {
             </span>
             <button 
               className="pm-nav-logout"
-              onClick={() => navigate('/admin/login')}
+              onClick={() => navigate('/')}
             >
               <span className="pm-nav-icon">🚪</span>
               Logout
@@ -247,7 +228,7 @@ export default function AdminDashboard() {
           <div className="pm-card">
             <div className="pm-card-header">
               <h2>Top Products</h2>
-              <Link to="/admin/products" className="pm-card-link" onClick={handleProductsClick}>View All</Link>
+              <Link to="/admin/products" className="pm-card-link">View All</Link>
             </div>
             <div className="pm-card-content">
               <div className="pm-table-container">
@@ -268,8 +249,8 @@ export default function AdminDashboard() {
                           <span className="pm-category-badge">{product.category}</span>
                         </td>
                         <td>
-                          <span className={`pm-stock-badge ${product.stock > 10 ? 'in-stock' : 'low-stock'}`}>
-                            {product.stock} units
+                          <span className={`pm-stock-badge ${product.inStock ? 'in-stock' : 'low-stock'}`}>
+                            {product.inStock ? 'In Stock' : 'Out of Stock'}
                           </span>
                         </td>
                         <td>
@@ -375,7 +356,7 @@ export default function AdminDashboard() {
               <button className="pm-btn pm-btn-primary" onClick={() => {
                 setShowPermissionModal(false);
                 logout();
-                navigate('/admin/login');
+                navigate('/');
               }}>
                 Login as Admin
               </button>
@@ -815,6 +796,10 @@ export default function AdminDashboard() {
             flex-wrap: wrap;
           }
 
+          .pm-header, .pm-main-content, .pm-stats, .pm-nav {
+            padding: 1rem;
+          }
+
           .pm-header-content {
             flex-direction: column;
             gap: 1rem;
@@ -822,7 +807,8 @@ export default function AdminDashboard() {
           }
 
           .pm-stats {
-            grid-template-columns: repeat(2, 1fr);
+            grid-template-columns: 1fr;
+            padding: 1rem;
           }
 
           .pm-content-grid {

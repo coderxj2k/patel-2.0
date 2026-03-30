@@ -539,19 +539,24 @@ export default function ProductsPage() {
         .add-to-cart-btn {
           width: 100%;
           padding: 1rem;
-          border-radius: 100px;
-          border: none;
-          background: #ffd814;
-          color: #0f1111;
-          font-weight: 600;
+          border-radius: 8px;
+          border: 1px solid var(--accent);
+          background: rgba(0, 240, 255, 0.1);
+          color: var(--accent);
+          font-family: 'Outfit', sans-serif;
+          font-weight: 700;
           font-size: 0.95rem;
           cursor: pointer;
-          transition: background 0.2s;
+          transition: all 0.3s;
           margin-top: 1rem;
+          text-transform: uppercase;
+          letter-spacing: 0.1em;
         }
 
         .add-to-cart-btn:hover {
-          background: #f7ca00;
+          background: var(--accent);
+          color: #000;
+          box-shadow: 0 0 15px rgba(0, 240, 255, 0.4);
         }
 
         .no-results {
@@ -630,6 +635,35 @@ export default function ProductsPage() {
           .products-container.list .product-image {
             width: 100%;
             height: 200px;
+          }
+
+          .product-card {
+            grid-template-columns: 1fr;
+            gap: 1.5rem;
+            padding: 1.5rem;
+          }
+
+          .product-image-container {
+            width: 100%;
+            height: auto;
+            aspect-ratio: 1;
+            margin: 0 auto;
+          }
+
+          .product-price-row {
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+            align-items: center;
+            border-top: 1px solid var(--border);
+            padding-top: 1.5rem;
+            margin-top: 0.5rem;
+          }
+
+          .add-to-cart-btn {
+            width: auto;
+            margin-top: 0;
+            padding: 12px 24px;
           }
         }
       `}</style>

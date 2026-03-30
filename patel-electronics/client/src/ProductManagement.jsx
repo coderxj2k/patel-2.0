@@ -1,15 +1,15 @@
 import { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAdminAuth } from './admin-auth';
-import { useProductCRUD } from './useFirebaseData';
+import { useProductCRUD, useProducts } from './useFirebaseData';
 import { getApplianceImage } from './imageUtils';
 
 export default function ProductManagement() {
   const { admin, hasPermission } = useAdminAuth();
   const navigate = useNavigate();
   const { addProduct, updateProduct, deleteProduct } = useProductCRUD();
+  const { products } = useProducts();
   
-  const [products, setProducts] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingProduct, setEditingProduct] = useState(null);
   const [loading, setLoading] = useState(false);
@@ -55,109 +55,13 @@ export default function ProductManagement() {
 
   useEffect(() => {
     if (!admin) {
-      navigate('/admin/login');
+      navigate('/');
       return;
     }
 
-    if (!hasPermission('manage_products')) {
-      navigate('/admin/dashboard');
-      return;
-    }
 
-    loadProducts();
+
   }, [admin, navigate, hasPermission]);
-
-  const loadProducts = () => {
-    const savedProducts = localStorage.getItem('patelElectronicsProducts');
-    if (savedProducts) {
-      setProducts(JSON.parse(savedProducts));
-    } else {
-      const defaultProducts = [
-        {
-          id: 'frostline-fridge',
-          name: 'Frostline Smart Fridge',
-          description: 'Counter-depth cooling with adaptive humidity drawers.',
-          price: 74617,
-          originalPrice: 107817,
-          conditionRating: 'Good',
-          damageDescription: 'Small scratch on the left side panel. Fully functional.',
-          warranty: '1 Year Limited Warranty',
-          category: 'Cold Storage',
-          brand: 'Frostline',
-          inStock: true,
-          rating: 4.5,
-          reviews: 128,
-          image: '/images/fridge.png'
-        },
-        {
-          id: 'silkguard-washer',
-          name: 'Silkguard Washer',
-          description: 'Ultra-quiet drum with steam cleaning for delicate fabrics.',
-          price: 41417,
-          originalPrice: 62167,
-          conditionRating: 'Fair',
-          damageDescription: 'Dent on the front door. Operates normally.',
-          warranty: '6 Months Limited Warranty',
-          category: 'Fabric Care',
-          brand: 'Silkguard',
-          inStock: true,
-          rating: 4.7,
-          reviews: 89,
-          image: '/images/washer.png'
-        },
-        {
-          id: 'cinemaview-tv',
-          name: 'CinemaView OLED TV',
-          description: 'Ultra-thin 65" display with cinematic clarity.',
-          price: 99517,
-          originalPrice: 132717,
-          conditionRating: 'Good',
-          damageDescription: 'Minor scuffs on the back casing. Screen is flawless.',
-          warranty: '1 Year Limited Warranty',
-          category: 'Entertainment',
-          brand: 'CinemaView',
-          inStock: true,
-          rating: 4.8,
-          reviews: 203,
-          image: '/images/tv.png'
-        },
-        {
-          id: 'airpure-pro',
-          name: 'AirPure Pro',
-          description: 'HEPA filtration with smart air quality monitoring.',
-          price: 41417,
-          originalPrice: 58017,
-          conditionRating: 'Like New',
-          damageDescription: 'Open box return. No visible marks.',
-          warranty: '2 Year Manufacturer',
-          category: 'Air Care',
-          brand: 'AirPure',
-          inStock: true,
-          rating: 4.3,
-          reviews: 67,
-          image: '/images/purifier.png'
-        },
-        {
-          id: 'powerstation-elite',
-          name: 'PowerStation Elite',
-          description: 'Solar-compatible backup with app control.',
-          price: 28967,
-          originalPrice: 41417,
-          conditionRating: 'Good',
-          damageDescription: 'Slight discoloration on top panel.',
-          warranty: '1 Year Limited Warranty',
-          category: 'Small Appliances',
-          brand: 'PowerStation',
-          inStock: true,
-          rating: 4.6,
-          reviews: 45,
-          image: '/images/powerstation.png'
-        }
-      ];
-      setProducts(defaultProducts);
-      localStorage.setItem('patelElectronicsProducts', JSON.stringify(defaultProducts));
-    }
-  };
 
   const handleAddProduct = () => {
     setEditingProduct(null);
@@ -195,11 +99,7 @@ export default function ProductManagement() {
       setLoading(true);
       try {
         const result = await deleteProduct(productId);
-        if (result.success) {
-          const updatedProducts = products.filter(p => p.id !== productId);
-          setProducts(updatedProducts);
-          localStorage.setItem('patelElectronicsProducts', JSON.stringify(updatedProducts));
-        } else {
+        if (!result.success) {
           alert('Error deleting product: ' + result.error);
         }
       } catch (error) {
@@ -226,20 +126,8 @@ export default function ProductManagement() {
       let result;
       if (editingProduct) {
         result = await updateProduct(editingProduct.id, productData);
-        if (result.success) {
-          const updatedProducts = products.map(p => 
-            p.id === editingProduct.id ? productData : p
-          );
-          setProducts(updatedProducts);
-          localStorage.setItem('patelElectronicsProducts', JSON.stringify(updatedProducts));
-        }
       } else {
         result = await addProduct(productData);
-        if (result.success) {
-          const updatedProducts = [...products, productData];
-          setProducts(updatedProducts);
-          localStorage.setItem('patelElectronicsProducts', JSON.stringify(updatedProducts));
-        }
       }
 
       if (result.success) {
@@ -322,7 +210,7 @@ export default function ProductManagement() {
             </span>
             <button 
               className="pm-nav-logout"
-              onClick={() => navigate('/admin/login')}
+              onClick={() => navigate('/')}
             >
               <span className="pm-nav-icon">🚪</span>
               Logout
@@ -339,10 +227,12 @@ export default function ProductManagement() {
             <p>Manage your product inventory and pricing</p>
           </div>
           <div className="pm-actions">
-            <button className="pm-btn pm-btn-primary" onClick={handleAddProduct}>
-              <span className="pm-btn-icon">+</span>
-              Add Product
-            </button>
+            {hasPermission('manage_products') && (
+              <button className="pm-btn pm-btn-primary" onClick={handleAddProduct}>
+                <span className="pm-btn-icon">+</span>
+                Add Product
+              </button>
+            )}
           </div>
         </div>
       </header>
@@ -444,7 +334,7 @@ export default function ProductManagement() {
                   <th>Price / Original</th>
                   <th>Stock</th>
                   <th>Rating</th>
-                  <th>Actions</th>
+                  {hasPermission('manage_products') && <th>Actions</th>}
                 </tr>
               </thead>
               <tbody>
@@ -484,23 +374,25 @@ export default function ProductManagement() {
                     <td>
                       {renderStars(product.rating)}
                     </td>
-                    <td>
-                      <div className="pm-table-actions">
-                        <button 
-                          className="pm-action-btn pm-edit-btn"
-                          onClick={() => handleEditProduct(product)}
-                        >
-                          ✏️ Edit
-                        </button>
-                        <button 
-                          className="pm-action-btn pm-delete-btn"
-                          onClick={() => handleDeleteProduct(product.id)}
-                          disabled={loading}
-                        >
-                          🗑️ Delete
-                        </button>
-                      </div>
-                    </td>
+                    {hasPermission('manage_products') && (
+                      <td>
+                        <div className="pm-table-actions">
+                          <button 
+                            className="pm-action-btn pm-edit-btn"
+                            onClick={() => handleEditProduct(product)}
+                          >
+                            ✏️ Edit
+                          </button>
+                          <button 
+                            className="pm-action-btn pm-delete-btn"
+                            onClick={() => handleDeleteProduct(product.id)}
+                            disabled={loading}
+                          >
+                            🗑️ Delete
+                          </button>
+                        </div>
+                      </td>
+                    )}
                   </tr>
                 ))}
               </tbody>
@@ -528,21 +420,23 @@ export default function ProductManagement() {
                   </div>
                   <div className="pm-card-footer">
                     <span className="pm-card-price">₹{product.price}</span>
-                    <div className="pm-card-actions">
-                      <button 
-                        className="pm-card-btn pm-edit-btn"
-                        onClick={() => handleEditProduct(product)}
-                      >
-                        ✏️
-                      </button>
-                      <button 
-                        className="pm-card-btn pm-delete-btn"
-                        onClick={() => handleDeleteProduct(product.id)}
-                        disabled={loading}
-                      >
-                        🗑️
-                      </button>
-                    </div>
+                    {hasPermission('manage_products') && (
+                      <div className="pm-card-actions">
+                        <button 
+                          className="pm-card-btn pm-edit-btn"
+                          onClick={() => handleEditProduct(product)}
+                        >
+                          ✏️
+                        </button>
+                        <button 
+                          className="pm-card-btn pm-delete-btn"
+                          onClick={() => handleDeleteProduct(product.id)}
+                          disabled={loading}
+                        >
+                          🗑️
+                        </button>
+                      </div>
+                    )}
                   </div>
                 </div>
               </div>
@@ -1462,8 +1356,12 @@ export default function ProductManagement() {
             flex-direction: column;
           }
 
+          .pm-header, .pm-stats, .pm-search-filters, .pm-grid-container {
+            padding: 1rem;
+          }
+
           .pm-stats {
-            grid-template-columns: repeat(2, 1fr);
+            grid-template-columns: 1fr;
           }
 
           .pm-grid-container {

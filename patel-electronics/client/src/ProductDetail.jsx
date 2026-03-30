@@ -353,17 +353,19 @@ export default function ProductDetail() {
 
       <style jsx>{`
         .add-to-cart.adding {
-          background-color: #ffa500;
+          background-color: var(--accent);
+          color: black;
           opacity: 0.7;
           cursor: not-allowed;
         }
 
         .add-to-cart.added {
-          background-color: #008000;
+          background-color: #00ff80;
+          color: black;
         }
 
         .buy-now:hover {
-          background-color: #fff5e6;
+          background-color: rgba(255, 255, 255, 0.1);
         }
 
         .main-image img {
@@ -550,14 +552,20 @@ export default function ProductDetail() {
         }
 
         .add-to-cart {
-          background-color: #ffa500;
-          color: white;
+          background-color: var(--text-main);
+          color: var(--bg-color);
+          text-transform: uppercase;
+          letter-spacing: 0.1em;
+          border-radius: 8px;
         }
 
         .buy-now {
-          background-color: white;
-          border: 1px solid #ffa500;
-          color: #ffa500;
+          background-color: transparent;
+          border: 1px solid var(--accent);
+          color: var(--accent);
+          text-transform: uppercase;
+          letter-spacing: 0.1em;
+          border-radius: 8px;
         }
 
         .product-features {

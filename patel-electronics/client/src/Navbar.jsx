@@ -33,7 +33,6 @@ export default function Navbar() {
         ) : (
           <Link to="/login" className={`text-button ${isActive('/login')}`}>Sign In</Link>
         )}
-        <Link to="/admin/login" className="text-button admin-link">Admin</Link>
       </nav>
     </header>
   );

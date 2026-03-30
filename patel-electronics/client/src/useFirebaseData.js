@@ -213,10 +213,6 @@ export const useProductCRUD = () => {
       try {
         await Promise.race([setDoc(docRef, newProduct), timeoutPromise]);
       } catch (e) {
-        if (e.message.includes('timeout') || e.code === 'permission-denied') {
-          console.warn('Firebase write blocked/timed out. Yielding local success so UI can proceed.');
-          return { success: true, id: newProduct.id };
-        }
         throw e;
       }
       
@@ -242,10 +238,6 @@ export const useProductCRUD = () => {
       try {
         await Promise.race([updateDoc(productRef, updatedProduct), timeoutPromise]);
       } catch (e) {
-        if (e.message.includes('timeout') || e.code === 'permission-denied') {
-          console.warn('Firebase write blocked/timed out. Yielding local success so UI can proceed.');
-          return { success: true };
-        }
         throw e;
       }
       
