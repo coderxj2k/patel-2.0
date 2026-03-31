@@ -1,9 +1,10 @@
 import { useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAdminAuth } from './admin-auth';
+import { useOrders } from './useFirebaseData';
 
 export default function AdminOrders() {
-  const { admin } = useAdminAuth();
+  const { admin, hasPermission } = useAdminAuth();
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -11,6 +12,18 @@ export default function AdminOrders() {
       navigate('/');
     }
   }, [admin, navigate]);
+
+  const { orders, loading } = useOrders();
+
+  const getStatusBadge = (status) => {
+    const colors = {
+      delivered: 'success',
+      shipped: 'info',
+      processing: 'warning',
+      pending: 'secondary'
+    };
+    return colors[status?.toLowerCase()] || 'secondary';
+  };
 
   return (
     <div className="admin-dashboard">
@@ -70,8 +83,62 @@ export default function AdminOrders() {
       <div className="pm-main-content" style={{ marginTop: '2rem' }}>
         <div className="pm-card">
           <div className="pm-card-content">
-            <h2>Order Management</h2>
-            <p style={{ marginTop: '1rem', color: '#64748b' }}>Full order management interface is under construction.</p>
+            {loading ? (
+              <p style={{ marginTop: '1rem', color: '#64748b' }}>Loading orders...</p>
+            ) : orders.length === 0 ? (
+              <p style={{ marginTop: '1rem', color: '#64748b' }}>No orders found.</p>
+            ) : (
+              <div className="pm-table-container">
+                <table className="pm-table">
+                  <thead>
+                    <tr>
+                      <th>Order ID</th>
+                      <th>Customer</th>
+                      <th>Date</th>
+                      <th>Items</th>
+                      <th>Total</th>
+                      <th>Status</th>
+                      {hasPermission('manage_sales') && <th>Actions</th>}
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {orders.map((order) => {
+                      const orderDate = new Date(order.createdAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+                      return (
+                        <tr key={order.id} className="pm-table-row">
+                          <td>
+                            <span className="pm-order-id" title={order.id}>
+                              {order.id.split('-').pop()}
+                            </span>
+                          </td>
+                          <td>
+                            <div className="pm-customer-info">
+                               <span style={{fontWeight: 500}}>{order.shippingAddress?.fullName}</span>
+                               <span style={{fontSize: '0.75rem', color: '#64748b'}}>{order.customerEmail}</span>
+                            </div>
+                          </td>
+                          <td>{orderDate}</td>
+                          <td>{order.items?.length || 0}</td>
+                          <td>
+                            <span className="pm-price">₹{order.total?.toLocaleString()}</span>
+                          </td>
+                          <td>
+                            <span className={`pm-status-badge pm-status-${getStatusBadge(order.status)}`}>
+                              {order.status}
+                            </span>
+                          </td>
+                          {hasPermission('manage_sales') && (
+                            <td>
+                              <button className="pm-action-btn pm-edit-btn" onClick={() => alert('Order status updates coming soon!')}>Update</button>
+                            </td>
+                          )}
+                        </tr>
+                      );
+                    })}
+                  </tbody>
+                </table>
+              </div>
+            )}
           </div>
         </div>
       </div>
@@ -99,7 +166,21 @@ export default function AdminOrders() {
         .pm-card { background: white; border-radius: 0.75rem; overflow: hidden; box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1); }
         .pm-card-content { padding: 1.5rem; }
         .pm-main-content { padding: 0 2rem 2rem; max-width: 1400px; margin: 0 auto; }
-        
+        .pm-table-container { overflow-x: auto; }
+        .pm-table { width: 100%; border-collapse: collapse; }
+        .pm-table th { background: #f8fafc; padding: 0.75rem; text-align: left; font-weight: 600; color: #374151; border-bottom: 1px solid #e5e7eb; font-size: 0.875rem; }
+        .pm-table td { padding: 0.75rem; border-bottom: 1px solid #f3f4f6; font-size: 0.875rem; }
+        .pm-table-row:hover { background: #f8fafc; }
+        .pm-order-id { font-family: monospace; background: #f1f5f9; padding: 0.25rem 0.5rem; border-radius: 0.25rem; font-size: 0.75rem; }
+        .pm-status-badge { padding: 0.25rem 0.75rem; border-radius: 1rem; font-size: 0.75rem; font-weight: 500; text-transform: capitalize; }
+        .pm-status-success { background: #dcfce7; color: #166534; }
+        .pm-status-info { background: #dbeafe; color: #1e40af; }
+        .pm-status-warning { background: #fef3c7; color: #92400e; }
+        .pm-status-secondary { background: #f3f4f6; color: #6b7280; }
+        .pm-price { font-weight: 700; color: #1e293b; }
+        .pm-customer-info { display: flex; flex-direction: column; gap: 0.1rem; }
+        .pm-action-btn { background: #f1f5f9; color: #374151; border: none; padding: 0.35rem 0.75rem; border-radius: 0.35rem; font-size: 0.75rem; font-weight: 500; cursor: pointer; transition: all 0.2s; }
+        .pm-action-btn:hover { background: #e2e8f0; }
         @media (max-width: 768px) {
           .pm-nav, .pm-header, .pm-main-content { padding: 1rem; }
           .pm-nav-content { flex-direction: column; gap: 1rem; align-items: stretch; }

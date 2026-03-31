@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAdminAuth } from './admin-auth';
-import { useProducts } from './useFirebaseData';
+import { useProducts, useOrders } from './useFirebaseData';
 
 export default function AdminDashboard() {
   const { admin, logout, hasPermission } = useAdminAuth();
@@ -9,7 +9,7 @@ export default function AdminDashboard() {
   const { products } = useProducts();
   const [activeTab, setActiveTab] = useState('overview');
   const [salesData, setSalesData] = useState([]);
-  const [orders, setOrders] = useState([]);
+  const { orders } = useOrders();
   const [customers, setCustomers] = useState([]);
   const [showPermissionModal, setShowPermissionModal] = useState(false);
 
@@ -35,14 +35,6 @@ export default function AdminDashboard() {
       { id: 5, date: '2024-03-18', amount: 41417, product: 'PowerStation Elite', customer: 'Tom Brown' }
     ];
 
-    // Demo orders
-    const demoOrders = [
-      { id: 'ORD001', customer: 'John Doe', date: '2024-03-20', status: 'delivered', total: 107817, items: 1 },
-      { id: 'ORD002', customer: 'Jane Smith', date: '2024-03-20', status: 'processing', total: 74617, items: 1 },
-      { id: 'ORD003', customer: 'Mike Johnson', date: '2024-03-19', status: 'shipped', total: 132717, items: 1 },
-      { id: 'ORD004', customer: 'Sarah Williams', date: '2024-03-19', status: 'pending', total: 58017, items: 1 }
-    ];
-
     // Demo customers
     const demoCustomers = [
       { id: 1, name: 'John Doe', email: 'john@example.com', orders: 3, totalSpent: 323451 },
@@ -52,7 +44,6 @@ export default function AdminDashboard() {
     ];
 
     setSalesData(demoSales);
-    setOrders(demoOrders);
     setCustomers(demoCustomers);
   };
 
@@ -131,10 +122,12 @@ export default function AdminDashboard() {
             <p>Welcome back! Here's what's happening with your store today.</p>
           </div>
           <div className="pm-actions">
-            <button className="pm-btn pm-btn-primary" onClick={handleProductsClick}>
-              <span className="pm-nav-icon" style={{marginRight: '8px'}}>📦</span>
-              Manage Products
-            </button>
+            {hasPermission('manage_products') && (
+              <button className="pm-btn pm-btn-primary" onClick={() => navigate('/admin/products')}>
+                <span className="pm-nav-icon" style={{marginRight: '8px'}}>📦</span>
+                Manage Products
+              </button>
+            )}
           </div>
         </div>
       </header>
@@ -201,23 +194,28 @@ export default function AdminDashboard() {
                     </tr>
                   </thead>
                   <tbody>
-                    {orders.slice(0, 5).map((order) => (
-                      <tr key={order.id} className="pm-table-row">
-                        <td>
-                          <span className="pm-order-id">{order.id}</span>
-                        </td>
-                        <td>{order.customer}</td>
-                        <td>{order.date}</td>
-                        <td>
-                          <span className={`pm-status-badge pm-status-${getStatusBadge(order.status)}`}>
-                            {order.status}
-                          </span>
-                        </td>
-                        <td>
-                          <span className="pm-price">₹{order.total}</span>
-                        </td>
-                      </tr>
-                    ))}
+                    {orders.slice(0, 5).map((order) => {
+                      const orderDate = new Date(order.createdAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+                      return (
+                        <tr key={order.id} className="pm-table-row">
+                          <td>
+                            <span className="pm-order-id" title={order.id}>
+                              {order.id.split('-').pop()}
+                            </span>
+                          </td>
+                          <td>{order.shippingAddress?.fullName || 'Unknown'}</td>
+                          <td>{orderDate}</td>
+                          <td>
+                            <span className={`pm-status-badge pm-status-${getStatusBadge(order.status)}`}>
+                              {order.status}
+                            </span>
+                          </td>
+                          <td>
+                            <span className="pm-price">₹{order.total?.toLocaleString()}</span>
+                          </td>
+                        </tr>
+                      );
+                    })}
                   </tbody>
                 </table>
               </div>
