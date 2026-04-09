@@ -454,9 +454,13 @@ a {
 
 .product-footer {
   display: flex;
-  justify-content: space-between;
-  align-items: center;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 16px;
   margin-top: auto;
+}
+.product-footer .primary {
+  width: 100%;
 }
 .price {
   font-family: 'Outfit', sans-serif;
