@@ -80,16 +80,7 @@ export default function ProductsPage() {
       <Navbar />
 
       <div className="products-page">
-        {/* Header */}
-        <div className="products-header">
-          <div className="products-title">
-            <h1>All Products</h1>
-            <p>Discover our complete range of electronics and appliances</p>
-          </div>
-          <div className="results-count">
-            {sortedProducts.length} products found
-          </div>
-        </div>
+
 
         {/* Filters Sidebar */}
         <aside className="products-sidebar">
