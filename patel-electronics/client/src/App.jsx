@@ -15,6 +15,7 @@ import ProductsPage from './ProductsPage';
 import AdminOrders from './AdminOrders';
 import AdminCustomers from './AdminCustomers';
 import AdminAnalytics from './AdminAnalytics';
+import Invoice from './Invoice';
 import { AuthProvider, useAuth } from './auth-context.jsx';
 import { AdminAuthProvider } from './admin-auth.jsx';
 import { useCollections, useProducts } from './useFirebaseData';
@@ -339,6 +340,7 @@ function AppWithAuth() {
         <Route path="/admin/orders" element={<AdminThemeWrapper><AdminOrders /></AdminThemeWrapper>} />
         <Route path="/admin/customers" element={<AdminThemeWrapper><AdminCustomers /></AdminThemeWrapper>} />
         <Route path="/admin/analytics" element={<AdminThemeWrapper><AdminAnalytics /></AdminThemeWrapper>} />
+        <Route path="/invoice/:orderId" element={<Invoice />} />
       </Routes>
     </Router>
   );

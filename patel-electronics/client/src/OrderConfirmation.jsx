@@ -52,6 +52,7 @@ export default function OrderConfirmation() {
 
               <div className="action-buttons">
                 <Link to="/my-orders" className="primary action-btn">Track Order</Link>
+                <Link to={`/invoice/${orderId}`} target="_blank" className="ghost action-btn">View Invoice</Link>
                 <Link to="/products" className="ghost action-btn">Continue Shopping</Link>
               </div>
             </>

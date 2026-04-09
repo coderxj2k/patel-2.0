@@ -101,7 +101,7 @@ export default function UserOrders() {
                     <div className="order-actions-header">
                       <span className="meta-label">ORDER # {order.id.split('-').pop().toUpperCase()}</span>
                       <div className="header-links">
-                        <a href="#" className="text-link">View Invoice</a>
+                        <Link to={`/invoice/${order.id}`} target="_blank" className="text-link">View Invoice</Link>
                       </div>
                     </div>
                   </div>
